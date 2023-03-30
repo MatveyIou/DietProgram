@@ -22,7 +22,7 @@ Users can scroll through his Dates to see thier calorie intake.
 * CRUD functionality is enabled for the users to thier products.
 
 # How to run the project
-We'll have to run The FrontEnd and BackEnd. <br>
+We'll have to run the FrontEnd and BackEnd. <br>
 Open two terminals and navigate to the FrontEnd and BackEnd.
 ## FrontEnd:
 Navigate to the FrontEnd folder:
