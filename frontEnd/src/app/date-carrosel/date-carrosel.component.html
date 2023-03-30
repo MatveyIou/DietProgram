@@ -1,0 +1,40 @@
+
+<!-- (slide) An event emitted just before the slide transition starts. 
+	 (slid)	An event emitted right after the slide transition is completed.
+-->
+<!-- TODO
+https://keen-slider.io/examples -->
+<div (touchstart)="posIni = $event.changedTouches[0].pageX"
+      (touchend)="move($event.changedTouches[0].pageX)">
+	  
+<ngb-carousel style="z-index: 0;" id="myCarousel"
+#carousel
+[showNavigationArrows]="false"
+[showNavigationIndicators]="showNavigationIndicators"
+[interval]=0 
+[wrap]="false"
+(slid)="addDateDay($event)"
+>
+<ng-template ngbSlide  *ngFor="let date of userDatesCarousel">
+	<div tabindex="0">
+		<button class="carousel-control-prev" (click)="prevClick()">
+			<span class="carousel-control-prev-icon"></span>
+		  </button>
+		  <button class="carousel-control-next" (click)="nextClick()">
+			<span class="carousel-control-next-icon"></span>
+		  </button>
+	</div>
+		<div class="picsum-img-wrapper text-center ">	
+			<p>{{date}}</p>
+		
+		</div>
+		<app-selector [currentDateData]="this.getDateData()" (valueSelectedFoodPass)="this.passUserProductUpdate($event)"></app-selector>
+</ng-template>
+
+
+
+</ngb-carousel>
+</div>
+
+
+

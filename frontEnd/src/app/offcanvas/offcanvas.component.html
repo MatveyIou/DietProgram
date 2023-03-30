@@ -1,0 +1,87 @@
+<ng-template id="offcanvas" #content let-offcanvas>
+	<div class="offcanvas-header row">
+		<div class="col-3"><button type="button" class=" btn-close text-center " aria-label="Close"
+				(click)="closeCanvas()"></button></div>
+
+		<h4 class="col-6 offcanvas-title text-center align-self-center" style="margin: auto;">Offcanvas title number {{this.canvasNumber}}</h4>
+		<div class="col-3"></div>
+
+
+	</div>
+	<div class="offcanvas-body">
+		<form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+			<div class="form-group">
+				<label for="name" class="d-flex justify-content-center"
+					[ngClass]="{ 'text-success': registrationForm.controls.name.valid, 'text-danger': registrationForm.controls.name.invalid}">name</label>
+				<input type="name" class="form-control text-center" formControlName="name" placeholder="name">
+			</div>
+			<div class="form-group">
+				<label for="kcal_total" class="d-flex justify-content-center"
+					[ngClass]="{ 'text-success': registrationForm.controls.kcal_total.valid, 'text-danger': registrationForm.controls.kcal_total.invalid}">kcal_total</label>
+				<input type="kcal_total" class="form-control text-center" formControlName="kcal_total" placeholder="kcal_total">
+			</div>
+			<div class="form-group">
+				<label for="carbs" class="d-flex justify-content-center"
+					[ngClass]="{ 'text-success': registrationForm.controls.carbs.valid, 'text-danger': registrationForm.controls.carbs.invalid}">carbs</label>
+				<input type="carbs" class="form-control text-center" formControlName="carbs" placeholder="carbs">
+			</div>
+			<div class="form-group">
+				<label for="protein" class="d-flex justify-content-center"
+					[ngClass]="{ 'text-success': registrationForm.controls.protein.valid, 'text-danger': registrationForm.controls.protein.invalid}">protein</label>
+				<input type="protein" class="form-control text-center" formControlName="protein" placeholder="protein" >
+			</div>
+			<div class="form-group">
+				<label for="fat" class="d-flex justify-content-center"
+					[ngClass]="{ 'text-success': registrationForm.controls.fat.valid, 'text-danger': registrationForm.controls.fat.invalid}">fat</label>
+				<input type="fat" class="form-control text-center" formControlName="fat" placeholder="fat">
+			</div>
+			<div *ngIf="errorMessage" class="d-flex justify-content-center mt-2">
+				<label class="error-message text-danger">
+				  {{ errorMessage }}</label>
+			  </div>
+			  <div *ngIf="message" class="d-flex justify-content-center mt-2">
+				<label class="error-message text-success">
+				  {{ message }}</label>
+			  </div>
+			<button #target type="submit" class="btn btn-secondary mt-3"
+                        [disabled]="registrationForm.invalid">Save Product</button>
+		</form>
+		<div style="height: 300px; overflow-y: scroll;">
+			<ul *ngFor="let product of userCustomFood[this.canvasNumber]"> 
+			  <li (click)="selectProduct(product)" [class.selected]="isSelected(product)">
+				<label>Name: {{product.name}}</label><br>
+				<label>kcal_total: {{product.kcal_total}}</label><br>
+				<label>carbs: {{product.carbs}}</label>
+				<label>protein: {{product.protein}}</label>
+				<label>fat: {{product.fat}}</label>
+				<label>id: {{product._id}}</label>
+			  </li>
+			  <div class="d-flex justify-content-end me-5">
+				<button (click)="editProduct(product)">Edit</button>
+				<button (click)="deleteProduct(product)">Delete</button></div>
+			</ul>
+		</div>
+	</div>
+</ng-template>
+
+
+
+
+<!-- <button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openEnd()">Right position</button> -->
+<!-- <button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openTop(content)">Top position</button>
+<button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openBottom(content)">Bottom position</button>
+<button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openNoBackdrop(content)">No backdrop</button>
+<button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openStaticBackdrop(content)">Static backdrop</button>
+<button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openScroll(content)">
+	Scrolling of main content enabled
+</button>
+<button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openNoKeyboard(content)">
+	Escape does not dismiss
+</button>
+<button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openNoAnimation(content)">No animation</button>
+<button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openCustomBackdropClass(content)">
+	Custom backdrop class
+</button>
+<button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openCustomPanelClass(content)">
+	Custom panel class
+</button> -->

@@ -1,0 +1,70 @@
+
+<nav id="start">
+  <div class="container">
+    <div class="fontawesome-cog" id="icon"> icon</div>
+    <ul>
+      <li>
+        <a href="#">Item 1</a>
+      </li>
+      <li>
+        <button type="submit" class="btn btn-primary px-2" (click)="logoutAction()">Logout</button>
+      </li>
+    </ul>
+  </div>
+  <div class="container d-flex justify-content-center ">
+    <div class="up-button"><button><p class="h2" onClick="window.scrollTo(0, 0);">Up Button</p></button></div>
+  </div>
+</nav>
+
+<div id="nav-bg"></div>
+<header>
+  <div class="bignadpis text-center">
+
+    <p class="h1 my-4">Hello {{username}}</p>
+
+    <div class="row m-0 mb-5 align-items-center">
+      <div class="col ">
+        <p>{{userData.mainData[selectorDate()].kcal}}</p>
+        <p class="h6">EATEN</p>
+
+      </div>
+      <div class="col">
+        <app-progressbar
+        [kcal_left]="userData.mainData[selectorDate()].kcal_left"
+        [kcal]="userData.mainData[selectorDate()].kcal"
+        [burned]="userData.mainData[selectorDate()].burned">
+        </app-progressbar>
+      </div>
+      <div class="col">
+        <p>{{userData.mainData[selectorDate()].burned}}</p>
+        <p class="h6">BURNED</p>
+      </div>
+    </div>
+    <div class="row m-0">
+      <div class="col">
+        <p class="h6">CARBS</p>
+        <div>----</div>
+        <p>{{userData.mainData[selectorDate()].carbs}} / {{userData.mainData[selectorDate()].carbs_total}}</p>
+
+      </div>
+      <div class="col">
+        <p class="h6">PROTEIN</p>
+        <div>----</div>
+        <p>{{userData.mainData[selectorDate()].protein}} / {{userData.mainData[selectorDate()].protein_total}}</p>
+      </div>
+      <div class="col">
+        <p class="h6">FAT</p>
+        <div>----</div>
+        <p>{{userData.mainData[selectorDate()].fat}} / {{userData.mainData[selectorDate()].fat_total}}</p>
+      </div>
+    </div>
+  </div>
+  <div type="button" onClick="window.scrollTo(0, 465);"  style="margin-top: 10vh; transform: scale(0.5,0.5);">
+    <svg class="arrows">
+      <path class="a1" d="M0 0 L30 32 L60 0"></path>
+      <path class="a2" d="M0 20 L30 52 L60 20"></path>
+      <path class="a3" d="M0 40 L30 72 L60 40"></path>
+    </svg>
+  </div>
+  
+</header>

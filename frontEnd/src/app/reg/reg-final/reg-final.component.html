@@ -1,0 +1,66 @@
+<div id="content" class="d-flex justify-content-around">
+  <div class="m-5">
+    <div class="page-content page-container" id="page-content">
+      <div class="padding">
+        <div class="row">
+          <div>
+            <div class="card bg-dark">
+              <div class="card-header text-light bg-dar"><strong>Login to your user</strong></div>
+              <div class="card-body">
+
+                <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+                  <div class="form-group">
+                    <label for="name" class=""
+                      [ngClass]="{ 'text-success': registrationForm.controls.name.valid, 'text-danger': registrationForm.controls.name.invalid}">UserName</label>
+                    <input type="text" class="form-control" formControlName="name" placeholder="userName">
+                  </div>
+                  <div class="form-group">
+                    <div class="d-flex justify-content-between"><label for="email" class=""
+                        [ngClass]="{ 'text-success': registrationForm.controls.email.valid, 'text-danger': registrationForm.controls.email.invalid}">Email</label>
+                      <label class="text-danger"> Valid @</label>
+                    </div>
+                    <input type="email" class="form-control" formControlName="email" placeholder="Email">
+                  </div>
+                  <div class="form-group">
+                    <div class="d-flex justify-content-between"><label for="password" class="" [ngClass]="{
+            'text-success': registrationForm.controls.password.valid,
+            'text-danger': registrationForm.controls.password.invalid}">Password </label> <label class="text-danger">
+                        Min 3 letters</label></div>
+                    <input type="password" placeholder="Password" class="form-control" formControlName="password">
+                  </div>
+                  <div class="form-group">
+                    <label for="confirmPassword" class="text-danger" style="color:#D03545" [ngClass]="{
+        'text-success': !registrationForm.get('confirmPassword').hasError('mismatchedPasswords') && registrationForm.controls.password.valid,
+        'text-danger': registrationForm.get('confirmPassword').hasError('mismatchedPasswords') }">Confirm
+                      Password</label>
+                    <input type="password" placeholder="Confirm Password" class="form-control"
+                      formControlName="confirmPassword">
+                    <div class="text-danger d-flex justify-content-center mt-2"
+                      *ngIf="registrationForm.get('confirmPassword').hasError('mismatchedPasswords')">
+                      <label>
+                        Passwords do not match</label>
+                    </div>
+                    <div *ngIf="errorMessage" class="d-flex justify-content-center mt-2">
+                      <label class="error-message text-danger">
+                        {{ errorMessage }}</label>
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-end ">
+                    <span class="d-inline-block"
+                      [ngbTooltip]="registrationForm.invalid ? 'Please Fill The Fields.' : ''" placement="start"
+                      [openDelay]="50" [closeDelay]="100" [positionTarget]="target">
+
+                      <button #target type="submit" class="btn btn-secondary mt-3"
+                        [disabled]="registrationForm.invalid">Register</button>
+                    </span>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
