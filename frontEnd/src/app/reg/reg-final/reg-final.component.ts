@@ -36,6 +36,7 @@ export class RegFinalComponent implements OnInit {
   }
   goToLogin(){
     this.router.navigate(['/login']);
+    console.log("test")
   }
   /**
    * 
