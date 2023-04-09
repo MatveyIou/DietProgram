@@ -34,6 +34,9 @@ export class RegFinalComponent implements OnInit {
         validator: this.matchingPasswords('password', 'confirmPassword')
       });
   }
+  goToLogin(){
+    this.router.navigate(['/login']);
+  }
   /**
    * 
    * @param passwordKey 

@@ -45,14 +45,17 @@
                         {{ errorMessage }}</label>
                     </div>
                   </div>
-                  <div class="d-flex justify-content-end ">
-                    <span class="d-inline-block"
+                  <div class="d-flex justify-content-end mt-3">
+                    <span  class="d-inline-block me-4"
                       [ngbTooltip]="registrationForm.invalid ? 'Please Fill The Fields.' : ''" placement="start"
                       [openDelay]="50" [closeDelay]="100" [positionTarget]="target">
 
-                      <button #target type="submit" class="btn btn-secondary mt-3"
+                      <button #target type="submit" class="btn btn-secondary mt-auto"
                         [disabled]="registrationForm.invalid">Register</button>
                     </span>
+                    <div class="mt-auto">
+                      <p class="h6 text-secondary">Already have an account? <a class="h5 text-success login-link" (click)="goToLogin()">Log in</a></p>
+                    </div>
                   </div>
                 </form>
 
