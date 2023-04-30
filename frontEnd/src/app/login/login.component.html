@@ -8,7 +8,7 @@
                             <div class="card-header text-light bg-dar"><strong>Login to your user</strong></div>
                             <div class="card-body">
                                 <!-- method="POST" -->
-                                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                                <form [formGroup]="loginForm" >
 
                                     <div class="form-group">
                                         <label for="email" class="text-muted">Email</label>
@@ -22,18 +22,22 @@
                                     </div>
                                     <div class="my-2 d-flex justify-content-center" *ngIf="isRegistered"> <label
                                             class="text-success">New User is Registered</label></div>
-
+                                            <div *ngIf="errorMessage" class="d-flex justify-content-center mt-2">
+                                                <label class="error-message text-danger">
+                                                  {{ errorMessage }}</label>
+                                            </div>
                                     <div class="mt-3 d-flex justify-content-center">
                                         <!-- formmethod="POST" -->
                                         <input id="login" type="submit" class="btn btn-primary"
-                                            (click)="changeButtonClickType('login')" value="Login">
+                                            (click)="onSubmit('login')" value="Login">
                                         <div class="px-5"></div>
                                         <!-- TODO  reg-->
                                         <input id="register" type="submit" class="btn btn-secondar text-muted"
-                                            (click)="changeButtonClickType('register')" value="Register">
+                                            (click)="onSubmit('register')" value="Register">
 
                                     </div>
                                 </form>
+                                
                             </div>
                         </div>
                     </div>

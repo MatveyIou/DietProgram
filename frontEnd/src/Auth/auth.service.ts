@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, firstValueFrom } from 'rxjs';
+import { BehaviorSubject, Observable, firstValueFrom,Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from 'src/environment/environment';
 import { Router } from '@angular/router';
@@ -121,7 +121,22 @@ updateCustomFood(editProduct:ICustomFood): Observable<any>{
   getIsAuthenticated(): Observable<boolean> {
     return this.isAuthenticated$.asObservable();
   }
-  
+  subscribeIsAuthenticatedObservable(): Subscription {
+    return this.getIsAuthenticated().subscribe(isAuthenticated => {
+      console.log("Subscribing to isAuthenticated")
+      if (isAuthenticated) {
+        // Redirect to another page if the user is already authenticated
+        console.log("looks like you are already logged in")
+        this.router.navigate(['/login/home']);
+      }
+      else
+        console.log("looks like the user is not authenticated")
+    });
+  }
+  unsubscribeIsAuthenticatedObservable(IsAuthenticatedSubscription:Subscription): void{
+    console.log("\u001b[31m"+"Unsubscribing from isAuthenticated")
+    IsAuthenticatedSubscription.unsubscribe()
+  }
   async getIsValid(): Promise<Observable<boolean>> {
     await this.checkTokenValidity();
     return this.isValid$.asObservable();

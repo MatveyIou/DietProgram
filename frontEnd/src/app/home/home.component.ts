@@ -1,5 +1,5 @@
 import { Component, EventEmitter } from '@angular/core';
-import{AuthService} from '../../Auth/auth.service'
+import{AuthService} from '../../auth/auth.service'
 import { ActivatedRoute, Router } from '@angular/router';
 import { userData } from '../../models/user-data.model';
 import { HomeService } from '../home/home.service'

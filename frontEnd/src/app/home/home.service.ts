@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, lastValueFrom, tap, throwError } from 'rxjs';
-import { AuthService } from 'src/Auth/auth.service';
+import { AuthService } from 'src/auth/auth.service';
 import { userData } from '../../models/user-data.model';
 
 import { environment } from 'src/environment/environment';

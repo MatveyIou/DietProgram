@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { AuthService } from '../../Auth/auth.service'
+import { AuthService } from '../../auth/auth.service'
 import { Router,ActivatedRoute } from '@angular/router';
 import { userData } from '../../models/user-data.model';
 import { ContentComponent } from '../content/content.component';

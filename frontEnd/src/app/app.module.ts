@@ -24,7 +24,7 @@ import { RegComponent } from './reg/reg.component';
 import { RegFinalComponent } from './reg/reg-final/reg-final.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
-import { AuthGuard } from 'src/Auth/auth.guard';
+import { AuthGuard } from 'src/auth/auth.guard';
 import { UserStatsResolver } from 'src/resolvers/user-stats.resolver';
 
 import { UserCustomFoodResolver } from 'src/resolvers/user-custom-food.resolver';

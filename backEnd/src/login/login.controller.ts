@@ -51,7 +51,7 @@ export class LoginController {
       _id: await (await this.userService.findOneUserByEmail(req.body.email)).id,
       access_token: (await this.authService.login(req.body)).access_token
     } 
-    console.log("Result ",res)
+    console.log("Result login ",res)
      return res
    }
    /**
