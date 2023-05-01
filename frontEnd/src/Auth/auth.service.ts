@@ -25,15 +25,17 @@ export class AuthService {
   private validationUrl = environment.apiUrl + '/login/validate';
 
   private isAuthenticated$ = new BehaviorSubject<boolean>(this.hasToken());
-  private isValid$ = new BehaviorSubject<boolean>(this.hasToken());
 
-  constructor(private http: HttpClient,
+  constructor(
+    private http: HttpClient,
     private router: Router
   ) { }
   /**
    * We will use the Observable to check in a async way.
    * That means when we .subscribe() to it we can view any changes an act accordantly to does changes
+   * LoginResponse is an interface
    * idk how its works
+   * 
    */
   login(email: string, password: string): Observable<LoginResponse> {
     console.log("trying to login")
@@ -44,12 +46,16 @@ export class AuthService {
           //console.log("respond from server; JWT token: ", response['access_token'])
           this.setToken(response['access_token']);
           this.isAuthenticated$.next(true);
-          this.isValid$.next(true)
-          this.setSessionKeyUserStatsID(response._id)
+          this.setSessionKeyUserStatsID(response._id);
         })
       );
   }
-
+  /**
+   * Will remove the existing jwt token. and set the "isAuthenticated" to false to emit that the user is NOT Authenticated anymore
+   * 
+   * when we run this line: "this.isAuthenticated$.next(false);" it will emit and "trigger" the subscription
+   * (we are subscribing to the observable using )
+   */
   logout(): void {
     this.removeToken();
     this.isAuthenticated$.next(false);
@@ -58,66 +64,6 @@ export class AuthService {
     console.log("logged out")
   }
 
-  getData(route: string): Observable<any> {// TODO BACK END PRODUCTS
-    //console.log("trying to get: ", this.baseUrl +route)
-    const headers = new HttpHeaders({
-      Authorization: "Bearer " + this.getToken(),
-      User_ID:this.getSessionKeyUserStatsID()!
-    });
-    return this.http.get(this.baseUrl + route, {headers});
-  }
-  getSelectedFoodData(route: string,date:string): Observable<any> {// TODO BACK END PRODUCTS
-    //console.log("trying to get: ", this.baseUrl +route)
-    const headers = new HttpHeaders({
-      Authorization: "Bearer " + this.getToken(),
-      User_ID:this.getSessionKeyUserStatsID()!,
-      customdate:date!
-    });
-  
-    return this.http.get(this.baseUrl + route, {headers});
-  }
-  updateSelectedFoodData(route: string,date:string,selectedFood:ICustomFood[][]): Observable<any> {// TODO BACK END PRODUCTS
-    //console.log("trying to get: ", this.baseUrl +route)
-    const headers = new HttpHeaders({
-      Authorization: "Bearer " + this.getToken(),
-      User_ID:this.getSessionKeyUserStatsID()!,
-      customdate:date!
-    });
-    return this.http.put(this.baseUrl + route,selectedFood, {headers});
-  }
-pushCustomProduct(newProduct:ICustomFood,indexType:number): Observable<any>{
-    console.log("trying to update")
-    const headers = new HttpHeaders({
-      Authorization: "Bearer " + this.getToken(),
-      User_ID:this.getSessionKeyUserStatsID()!
-    });
-    return this.http.put<ICustomFood>(this.baseUrl+"/home/product/put?index="+indexType,newProduct,{headers})
-  }
-deleteCustomProduct(deleteProduct:ICustomFood): Observable<any>{
-  console.log("trying to delete")
-  const headers = new HttpHeaders({
-    Authorization: "Bearer " + this.getToken(),
-    User_ID:this.getSessionKeyUserStatsID()!
-  });
-  return this.http.delete<ICustomFood>(this.baseUrl+"/home/product/delete/"+deleteProduct._id,{headers})
-}
-updateCustomFood(editProduct:ICustomFood): Observable<any>{
-  console.log("trying to edit a product")
-  const headers = new HttpHeaders({
-    Authorization: "Bearer " + this.getToken(),
-    User_ID:this.getSessionKeyUserStatsID()!
-  });
-  return this.http.put<ICustomFood>(this.baseUrl+"/home/product/put/edit", editProduct,{headers})
-}
-
-  // postCustomProducts(route: string, data:userProducts): Observable<any>{
-  //   const headers = new HttpHeaders({
-  //     Authorization: "Bearer " + this.getToken()
-  //   });
-  //   console.log("postCustomProducts ", route, data, headers)
-  //   console.log(this.http.post(this.baseUrl + route, data, { headers })) 
-  //   return this.http.post<userProducts>(this.baseUrl + route, data, { headers });
-  // }
   getIsAuthenticated(): Observable<boolean> {
     return this.isAuthenticated$.asObservable();
   }
@@ -126,7 +72,7 @@ updateCustomFood(editProduct:ICustomFood): Observable<any>{
       console.log("Subscribing to isAuthenticated")
       if (isAuthenticated) {
         // Redirect to another page if the user is already authenticated
-        console.log("looks like you are already logged in")
+        console.log("looks like you are already logged in. Login")
         this.router.navigate(['/login/home']);
       }
       else
@@ -137,9 +83,59 @@ updateCustomFood(editProduct:ICustomFood): Observable<any>{
     console.log("\u001b[31m"+"Unsubscribing from isAuthenticated")
     IsAuthenticatedSubscription.unsubscribe()
   }
-  async getIsValid(): Promise<Observable<boolean>> {
+
+  getData(route: string): Observable<any> {// TODO BACK END PRODUCTS
+    const headers = new HttpHeaders({
+      Authorization: "Bearer " + this.getToken(),
+      User_ID:this.getSessionKeyUserStatsID()!
+    });
+    return this.http.get(this.baseUrl + route, {headers});
+  }
+  getSelectedFoodData(route: string,date:string): Observable<any> {// TODO BACK END PRODUCTS
+    const headers = new HttpHeaders({
+      Authorization: "Bearer " + this.getToken(),
+      User_ID:this.getSessionKeyUserStatsID()!,
+      customdate:date!
+    });
+  
+    return this.http.get(this.baseUrl + route, {headers});
+  }
+  updateSelectedFoodData(route: string,date:string,selectedFood:ICustomFood[][]): Observable<any> {// TODO BACK END PRODUCTS
+    const headers = new HttpHeaders({
+      Authorization: "Bearer " + this.getToken(),
+      User_ID:this.getSessionKeyUserStatsID()!,
+      customdate:date!
+    });
+    return this.http.put(this.baseUrl + route,selectedFood, {headers});
+  }
+  pushCustomProduct(newProduct:ICustomFood,indexType:number): Observable<any>{
+    console.log("trying to update")
+    const headers = new HttpHeaders({
+      Authorization: "Bearer " + this.getToken(),
+      User_ID:this.getSessionKeyUserStatsID()!
+    });
+    return this.http.put<ICustomFood>(this.baseUrl+"/home/product/put?index="+indexType,newProduct,{headers})
+  }
+  deleteCustomProduct(deleteProduct:ICustomFood): Observable<any>{
+  console.log("trying to delete")
+  const headers = new HttpHeaders({
+    Authorization: "Bearer " + this.getToken(),
+    User_ID:this.getSessionKeyUserStatsID()!
+  });
+  return this.http.delete<ICustomFood>(this.baseUrl+"/home/product/delete/"+deleteProduct._id,{headers})
+}
+  updateCustomFood(editProduct:ICustomFood): Observable<any>{
+  console.log("trying to edit a product")
+  const headers = new HttpHeaders({
+    Authorization: "Bearer " + this.getToken(),
+    User_ID:this.getSessionKeyUserStatsID()!
+  });
+  return this.http.put<ICustomFood>(this.baseUrl+"/home/product/put/edit", editProduct,{headers})
+}
+  
+  async getIsValid() {
     await this.checkTokenValidity();
-    return this.isValid$.asObservable();
+    return this.isAuthenticated$;
   }
   
   private async checkTokenValidity(): Promise<void> {
@@ -149,15 +145,17 @@ updateCustomFood(editProduct:ICustomFood): Observable<any>{
       if (response!.isValid) {
         console.log('Token is Valid!');
       } else {
-        console.log('Token is InValid! logging out');
-        this.isValid$.next(false);
+        console.log('Token is InValid! setting it to false');
         this.logout()
       }
     } catch (error) {
-      console.log("Error validating token, need to logging out", error);
-      this.isValid$.next(false);
+      console.log("Error validating token, need to log out", error);
+      this.logout()
     }
   }
+  /**
+   * TODO cheak if sending jwt to validate is correct with header
+  */
   private validateToken(): Observable<TokenValidationResponse> {
     const headers = new HttpHeaders({
       Authorization: "Bearer " + this.getToken()
