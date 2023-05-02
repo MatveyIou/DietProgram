@@ -31,11 +31,16 @@ export class AuthService {
     private router: Router
   ) { }
   /**
-   * We will use the Observable to check in a async way.
-   * That means when we .subscribe() to it we can view any changes an act accordantly to does changes
-   * LoginResponse is an interface
-   * idk how its works
+   * Login action. sets the user jwt and their season key
    * 
+   * the post<LoginResponse>() returns an Observable
+   * pipe() is "basically" a collection of functions that we can "chain" together
+   * tap() is the operator that lets as do actions without modifying the emission
+   * 
+   * we will .subscribe() to this method.
+   * when the response complete from the post method. then it will emit the value.
+   * the emitted response will immediately complete(and then CLOSES the subscription when it is emitted)
+   * and THEN it will return
    */
   login(email: string, password: string): Observable<LoginResponse> {
     console.log("trying to login")
@@ -46,6 +51,7 @@ export class AuthService {
           //console.log("respond from server; JWT token: ", response['access_token'])
           this.setToken(response['access_token']);
           this.isAuthenticated$.next(true);
+
           this.setSessionKeyUserStatsID(response._id);
         })
       );
@@ -132,7 +138,10 @@ export class AuthService {
   });
   return this.http.put<ICustomFood>(this.baseUrl+"/home/product/put/edit", editProduct,{headers})
 }
-  
+  /**
+   * checks the authenticity of the jwt of the user, updates it and return the updated value
+   * @returns the updated isAuthenticated 
+   */
   async getIsValid() {
     await this.checkTokenValidity();
     return this.isAuthenticated$;
@@ -154,7 +163,7 @@ export class AuthService {
     }
   }
   /**
-   * TODO cheak if sending jwt to validate is correct with header
+   * TODO check if sending jwt to validate is correct with header
   */
   private validateToken(): Observable<TokenValidationResponse> {
     const headers = new HttpHeaders({

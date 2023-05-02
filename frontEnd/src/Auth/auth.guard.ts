@@ -16,7 +16,8 @@ export class AuthGuard implements CanActivate {
     console.log("\x1b[0;32m"+"checking authenticity with Auth.guard.ts" )
     //.toPromise() is departed
     //firstValueFrom() is used to get the first emit(or the first valve)
-    const isAuth= await firstValueFrom(this.authService.getIsAuthenticated())
+    ////await firstValueFrom(this.authService.getIsAuthenticated())
+    const isAuth= await firstValueFrom(await this.authService.getIsValid())
     console.log("Authenticated is ",isAuth)
     return isAuth;
   }
