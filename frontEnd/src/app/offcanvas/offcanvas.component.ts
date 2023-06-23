@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, Renderer2, SimpleChanges, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, Output, Renderer2, SimpleChanges, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { delay, lastValueFrom } from 'rxjs';
 
@@ -121,7 +121,12 @@ export class OffcanvasComponent {
 		this.offcanvasService.open(this.content, { backdrop: 'static', position: 'end' },);
 		this.renderer.addClass(this.elementRef.nativeElement.ownerDocument.body, 'no-scroll');
 	}
-	//todo if we close with esc it doesnt do this function
+	//todo if we close with esc it doesn't do this function
+	//this is the dumb way to fix that issue... //todo find a better way
+	@HostListener('document:keydown.escape', ['$event'])
+	onKeyDown(event: KeyboardEvent) {
+  	this.closeCanvas();
+	}
 	closeCanvas() {
 		//this.updateSelected()
 		this.offcanvasService.dismiss('Cross click')
