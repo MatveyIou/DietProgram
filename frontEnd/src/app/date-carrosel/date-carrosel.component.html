@@ -28,7 +28,7 @@ https://keen-slider.io/examples -->
 			<p>{{date}}</p>
 		
 		</div>
-		<app-selector [currentDateData]="this.getDateData()" (valueSelectedFoodPass)="this.passUserProductUpdate($event)"></app-selector>
+		<app-selector [currentDateData]="currentDateData" (valueSelectedFoodPass)="this.passUserProductUpdate($event)"></app-selector>
 </ng-template>
 
 

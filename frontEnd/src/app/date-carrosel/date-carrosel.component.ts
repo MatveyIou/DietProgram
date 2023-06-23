@@ -26,6 +26,7 @@ export class DateCarroselComponent implements OnInit {
   showNavigationArrows = true;
   showNavigationIndicators = false;
   count : number= 2;
+  currentDateData:any;
 
   constructor(private activeRoute: ActivatedRoute,
     private dateCarroselService:DateCarroselService){
@@ -41,6 +42,7 @@ export class DateCarroselComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     console.log("\x1b[34m"+"ngONInit this.userDatesCarousel ",this.userDatesCarousel)
     this.addDate();
+    this.setDateData();
   }
   private addDate(): void{
     
@@ -69,11 +71,14 @@ export class DateCarroselComponent implements OnInit {
   nextClick(){
     this.carousel.next()
     this.activeIndex++
+    this.setDateData()
+    
   }
   prevClick(){
     this.carousel.prev()
     if(this.activeIndex>=1)
       this.activeIndex--
+      this.setDateData()
   }
   
   /**
@@ -86,10 +91,9 @@ export class DateCarroselComponent implements OnInit {
 
     if (offset > 100) this.carousel!.next();
   }
-  getDateData(){
-    //TODO is constantly called!
-    //console.log("sending this data!!! ",this.userData.mainData[this.activeIndex])
-    return this.userData.mainData[this.activeIndex]
+  setDateData(){
+    console.log("We are setting this data!!! ",this.userData.mainData[this.activeIndex])
+    this.currentDateData = this.userData.mainData[this.activeIndex]
   }
 
   passUserProductUpdate(event:ICustomFood[][]){
