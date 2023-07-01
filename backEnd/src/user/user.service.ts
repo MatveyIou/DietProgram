@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import {IUser } from './dto/user.dto';
-import {ICustomFood, IUserData} from './dto/user-data.dto';
+import {ICustomFood, IUserData, IUserPreset} from './dto/user-data.dto';
 
 @Injectable()
 export class UserService {
@@ -33,7 +33,6 @@ export class UserService {
       password: userDto.password,
       email: userDto.email,
     });
-    //TODO each user will have it own defaults
     const dataStat = new this.userDataModel({
       referenceID: data._id
     })
@@ -136,6 +135,37 @@ export class UserService {
     return await userData.save()
   }
 
+  async addNextMainData(userId:string){
+    const userData = await this.findOneUserData(userId)
+
+    const lastMainData = userData.mainData[userData.mainData.length - 1];
+    const nextDate = this.getNextDay(lastMainData.date);
+
+    const newData ={
+        date: nextDate,
+        kcal: 0,
+        kcal_left: 2000,
+        burned: 0,
+        carbs_total: 100,
+        carbs: 0,
+        protein_total: 100,
+        protein: 0,
+        fat_total: 100,
+        fat: 0,
+        selectedFood: [[],[],[],[]]
+      }
+    console.log("newData",newData)
+    
+  userData.mainData.push(newData);
+  console.log("userData",userData.mainData)
+  return await userData.save();
+  }
+  private getNextDay(date:string){
+    const lastDateStats= date.split("/")//dd/mm/yy
+    const nextDate= new Date("20"+lastDateStats[2]+"/"+lastDateStats[1]+"/"+lastDateStats[0])
+    nextDate.setDate(nextDate.getDate()+1)
+    return (nextDate.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' }))
+  }
 
 
 }

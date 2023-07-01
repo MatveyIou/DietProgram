@@ -75,7 +75,7 @@ export class LoginController {
     if(!res)
       console.log("not found res")
     else
-      console.log("found res", res)
+      console.log("found res")
     return res
    }
    /**
@@ -92,7 +92,7 @@ export class LoginController {
     if(!res)
       console.log("not Name found res")
     else
-      console.log("found Name res", res)
+      console.log("found Name res")
     return res
    }
   //  /**
@@ -116,19 +116,19 @@ export class LoginController {
    async getUserStats(@Headers('User_ID') userID:string,@Headers('customdate') date:string) {
     console.log(this.messageGET,"\ntrying to get selected products for:", (await this.userService.findOneUser(userID)).email)
     const mainData= await (await this.userService.findOneUserData(userID)).mainData
-    console.log("MAINDATA ",mainData, "DATE", date)
+    //console.log("MAINDATA ",mainData, "DATE", date)
     const res=mainData[mainData.findIndex(data => data.date === date)].selectedFood
     if(!res)
       console.log("not found res")
     else
-      console.log("found res", res)
+      console.log("found res")
     return res
    }
    @UseGuards(JwtAuthGuard)
    @Put('home/selectedproducts/put')
    async updateUserStats(@Headers('User_ID') userID:string,@Headers('customdate') date:string,@Request() req ) {
     console.log(this.messagePUT,"\ntrying to update selected products for:", (await this.userService.findOneUser(userID)).email)
-    console.log("req.body: ", req.body)
+    //console.log("req.body: ", req.body)
     const mainData=await (await this.userService.updateSelectedFood(userID, date, req.body)).mainData
     const res = mainData[mainData.findIndex(data => data.date === date)].selectedFood
     if(!res)
@@ -150,7 +150,7 @@ export class LoginController {
     if(!res)
       console.log("not found res")
     else
-      console.log("found res", res)
+      console.log("found res")
     return res
    }
    /**
@@ -166,7 +166,7 @@ export class LoginController {
     if(!res)
       console.log("not found res")
     else
-      console.log("Data found res", res)
+      console.log("Data found res")
     return res
    }
    /**
@@ -177,11 +177,11 @@ export class LoginController {
     * @returns 
     */
    @UseGuards(JwtAuthGuard)
-   @Put('home/product/put')
-   async pushCustomProduct(@Headers('User_ID') userID:string,@Request() req,@Query('index') indexType:number) {
-    console.log(this.messagePUT,"\ntrying to push 1 customProduct for:", (await this.userService.findOneUser(userID)).email)
-    console.log("req.body: ", req.body, "indexType: ", indexType)
-    const res= (await this.userService.pushNewCustomFood(userID,req.body,indexType))
+   @Get('home/get/next')
+   async pushCustomProduct(@Headers('User_ID') userID:string) {
+    console.log(this.messageGET,"\ntrying to get next mainDATA for:", (await this.userService.findOneUser(userID)).email)
+    //console.log("req.body: ", req.body)
+    const res= (await this.userService.addNextMainData(userID))
     if(!res)
       console.log("not found res for push")
     else
@@ -192,24 +192,28 @@ export class LoginController {
    @Put('home/product/put/edit')
    async updateCustomProduct(@Headers('User_ID') userID:string,@Request() req) {
     console.log(this.messagePUT,"\ntrying to edit customProduct for:", (await this.userService.findOneUser(userID)).email)
-    console.log("req.body: ", req.body)
+    //console.log("req.body: ", req.body)
     const res= (await this.userService.updateCustomFood(userID,req.body))
     if(!res)
       console.log("not found res for push")
     else
-      console.log("res for push", res)
+      console.log("res for push")
     return res
    }
+   
+  //  @UseGuards(JwtAuthGuard)
+  //  @Put('home/')
+
    @UseGuards(JwtAuthGuard)
    @Delete('home/product/delete/:id')
    async deleteCustomProduct(@Headers('User_ID') userID:string,@Param('id') customProductID:string) {
     console.log(this.messageDELETE,"\ntrying to Delete customProduct for:", (await this.userService.findOneUser(userID)).email)
-    console.log("product id: ", customProductID)
+    //console.log("product id: ", customProductID)
     const res= (await this.userService.removeCustomFood(userID,customProductID))
     if(!res)
       console.log("not found res for push")
     else
-      console.log("res for push", res)
+      console.log("res for push")
     return res
    }
   //  private makeDateStringArray(mainData:IUserPreset[]){

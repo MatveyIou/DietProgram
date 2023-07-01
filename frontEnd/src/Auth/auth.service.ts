@@ -5,7 +5,7 @@ import { tap } from 'rxjs/operators';
 import { environment } from 'src/environment/environment';
 import { Router } from '@angular/router';
 import { UserStatsResolver } from 'src/resolvers/user-stats.resolver';
-import { ICustomFood } from 'src/models/user-data.model';
+import { ICustomFood, IUserPreset } from 'src/models/user-data.model';
 
 interface LoginResponse {
   _id:string;
@@ -114,8 +114,14 @@ export class AuthService {
     });
     return this.http.put(this.baseUrl + route,selectedFood, {headers});
   }
+  updateNextNewData(): Observable<IUserPreset>{
+    const headers = new HttpHeaders({
+      Authorization: "Bearer " + this.getToken(),
+      User_ID:this.getSessionKeyUserStatsID()!
+    });
+    return this.http.get<any>(this.baseUrl+"/home/get/next",{headers})
+  }
   pushCustomProduct(newProduct:ICustomFood,indexType:number): Observable<any>{
-    console.log("trying to update")
     const headers = new HttpHeaders({
       Authorization: "Bearer " + this.getToken(),
       User_ID:this.getSessionKeyUserStatsID()!
@@ -148,13 +154,13 @@ export class AuthService {
   }
   
   private async checkTokenValidity(): Promise<void> {
-    console.log("checking for Validity")
+    console.log("\x1b[33m"+"checking for Validity")
     try {
       const response = await firstValueFrom(this.validateToken());
       if (response!.isValid) {
-        console.log('Token is Valid!');
+        console.log("\x1b[32m"+'Token is Valid!');
       } else {
-        console.log('Token is InValid! setting it to false');
+        console.log("\x1b[31m"+'Token is InValid! setting it to false');
         this.logout()
       }
     } catch (error) {
@@ -185,15 +191,15 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
   getSessionKeyUserStatsID(){
-    console.log("getting SessionKeyUserStatsID ")
+    //console.log("getting SessionKeyUserStatsID ",sessionStorage.getItem('userID'))
     return sessionStorage.getItem('userID')
   }
   setSessionKeyUserStatsID(userID:string){
-    console.log("setting SessionKeyUserStatsID ")
+    //console.log("setting SessionKeyUserStatsID ")
     sessionStorage.setItem('userID',userID)
   }
   removeSessionKeyUserStatsID(){
-    console.log("removing SessionKeyUserStatsID ")
+    //console.log("removing SessionKeyUserStatsID ")
     sessionStorage.removeItem('userID')
   }
   private getToken(): string | null {
