@@ -16,10 +16,10 @@ export class HomeService {
   getStats(): Observable<userData> {
   return this.authService.getData('/home').pipe(
     tap((response) => {
-      console.log('Successful response to get userStats FROM HOME>SERVICE', response);
+      console.log("\x1b[32m"+'Successful response','getStats()', response);
     }),
     catchError((error) => {
-      console.log('we caught an error', error);
+      console.log('we caught an error getStats()', error);
       console.log("looks like this user doesn't have any stats");
       return throwError(error);
     })

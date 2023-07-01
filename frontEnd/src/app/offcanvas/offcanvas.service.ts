@@ -14,13 +14,12 @@ export class OffcanvasService {
   constructor(private http: HttpClient,private authService: AuthService,) { }
 
   getSavedCustomFood():Observable<ICustomFood[][]>{
-    console.log("Trying to get productS")
     return this.authService.getData("/home/products").pipe(
       tap((response) => {
-        console.log('Successful response to get CustomProducts', response);
+        console.log("\x1b[32m"+'Successful response','getSavedCustomFood()', response);
       }),
       catchError((error) => {
-        console.log('we caught an error', error);
+        console.log('we caught an error getSavedCustomFood()', error);
         console.log("looks like this user doesn't have any CustomProducts");
         return throwError(error);
       })

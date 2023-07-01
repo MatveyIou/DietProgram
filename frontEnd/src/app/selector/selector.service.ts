@@ -14,13 +14,13 @@ export class SelectorService {
   constructor(private http: HttpClient,private authService: AuthService,) { }
 
   getSelectedFood(date:string):Observable<ICustomFood[][]>{
-    console.log("Trying to get Selected Product",date)
+    //console.log("Trying to get Selected Product",date)
     return this.authService.getSelectedFoodData("/home/selectedproducts",date).pipe(
       tap((response) => {
-        console.log('Successful response to get SelectedProducts', response);
+        console.log("\x1b[32m"+'Successful response','getSelectedFood()', response);
       }),
       catchError((error) => {
-        console.log('we caught an error', error);
+        console.log('we caught an error getSelectedFood()', error);
         console.log("looks like this user doesn't have any SelectedProducts");
         return throwError(error);
       })
@@ -30,10 +30,10 @@ export class SelectorService {
     console.log("Trying to get Selected Product",date)
     return this.authService.updateSelectedFoodData("/home/selectedproducts/put",date,selectedFood).pipe(
       tap((response) => {
-        console.log('Successful response to get SelectedProducts', response);
+        console.log("\x1b[32m"+'Successful response'+'updateSelectedFood()', response);
       }),
       catchError((error) => {
-        console.log('we caught an error', error);
+        console.log('we caught an error updateSelectedFood()', error);
         console.log("looks like this user doesn't have any SelectedProducts");
         return throwError(error);
       })

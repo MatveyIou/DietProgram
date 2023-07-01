@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { AuthService } from '../../auth/auth.service'
-import { Router,ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { userData } from '../../models/user-data.model';
 import { ContentComponent } from '../content/content.component';
 import { HeaderService } from './header.service';
@@ -14,44 +14,30 @@ import { lastValueFrom } from 'rxjs';
 export class HeaderComponent {
   userData!: userData
   @Input() elementRef!: ContentComponent;
-  username!:string
+  username!: string
   constructor(
     private authService: AuthService,
     private router: Router,
     private activeRoute: ActivatedRoute,
-    private headerService:HeaderService
+    private headerService: HeaderService
   ) {
- this.fetchData()//todo this maybe redandent
+    this.fetchData()//todo this maybe redandent
   }
 
 
   async fetchData() {
-    try {
       this.userData = await this.activeRoute.snapshot.data['Data'];
-      console.log("HEADER fetchData inside of constrictor", this.userData);
       await this.getUserName();
-    } catch (error) {
-      console.error(error);
-    }}
+  }
 
-  private async getUserName():Promise<void>{
-    try {
-    const response = await lastValueFrom(this.headerService.getUserName());
-      console.log("Handle successful response ", response);
-      this.username=response
-    } catch (error : any) {
-      console.log("we caught an error", error);
-      this.username=error
-    }
+  private async getUserName(): Promise<void> {
+      this.username = await lastValueFrom(this.headerService.getUserName());
   }
   async ngOnInit(): Promise<void> {
-    console.log("HEADER ngOnInit", this.username)
-    //this.userData= await this.activeRoute.snapshot.data['Data'];
-    console.log(this.userData)
     this.getUserName()
     this.htmlHeaderAnim()
   }
-  selectorDate(){
+  selectorDate() {
     return 0
   }
   logoutAction() {
@@ -85,5 +71,5 @@ export class HeaderComponent {
     window.addEventListener('scroll', function () { scrollCn(12.5) });
   }
 
-  
+
 }

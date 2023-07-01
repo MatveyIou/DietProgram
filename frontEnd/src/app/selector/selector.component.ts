@@ -25,10 +25,6 @@ export class SelectorComponent{
   calorieDisplay:string[]=["Add BreakFast","Add Launch","Add Snack","Add Dinner"]
   calorieTotal:number[]=[0,0,0,0]
   docs: HTMLElement[] | undefined
-  
- 
-
-  
 
   constructor(private activeRoute: ActivatedRoute,
     private selectorService: SelectorService,
@@ -36,18 +32,14 @@ export class SelectorComponent{
       
     }
   async fetchSelectedFood(){
-    try {
-      const response = await lastValueFrom(this.selectorService.getSelectedFood(this.currentDateData.date));
-      console.log("Handle successful to get selected food", response);
-      this.selectedFood=response
-      this.cdr.detectChanges();
-    } catch (error : any) {
-      console.log("we caught an error", error);
-      }
+    const response = await lastValueFrom(this.selectorService.getSelectedFood(this.currentDateData.date));
+    this.selectedFood=response
+    this.cdr.detectChanges();
+    
     }
 
   async ngOnInit(): Promise<void> {
-    console.log("\x1b[34m"+"SelectorComponent init", this.currentDateData.date)
+    console.log("\x1b[41m"+"selector init","this.currentDateData.date", this.currentDateData.date)
     await this.fetchSelectedFood()
     this.updateSumCalories()
   }
@@ -112,18 +104,20 @@ export class SelectorComponent{
         this.selectedFood=response
         this.cdr.detectChanges();
         this.updateSumCalories();
+        this.passSelectedFoodEvent();
       } catch (error : any) {
         console.log("we caught an error", error);
         }
       
     }
     passSelectedFoodEvent(){
+      console.log("EVEN EMMITER: ",this.selectedFood)
       this.valueSelectedFoodPass.emit(this.selectedFood)
     }
 
     updateSumCalories(){
       var sumNumbers=0
-      console.log("updateSumCalories is called. this is selectedFood:", this.selectedFood)
+      console.log("\x1b[41m"+"updateSumCalories is called.","this is selectedFood:", this.selectedFood)
       for (let i = 0; i < this.selectedFood.length; i++) {
         this.selectedFood[i].forEach(foodType => {
           sumNumbers += foodType.kcal_total

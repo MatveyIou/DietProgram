@@ -18,10 +18,10 @@ export class HeaderService {
   return this.authService.getData('/home/header').pipe(
     map(response => response.username),
     tap((response) => {
-      console.log('Successful response to get User name ', response);
+      console.log("\x1b[32m"+'Successful response','getUserName()', response);
     }),
     catchError((error) => {
-      console.log('we caught an error', error);
+      console.log('we caught an error getUserName()', error);
       console.log("looks like this we cant get the user name");
       return throwError(error);
     })

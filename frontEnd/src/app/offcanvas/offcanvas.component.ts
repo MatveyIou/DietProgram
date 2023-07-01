@@ -49,9 +49,8 @@ export class OffcanvasComponent {
 
 	async ngOnInit(): Promise<void> {
 		this.userCustomFood //TODO maybe object can cause problems
-		console.log("\x1b[34m"+"canvas NUMBER", this.canvasNumber)
-		console.log("\x1b[34m"+"off canvas CUSTOM_FOOD", this.userCustomFood)
-		console.log("\x1b[34m"+"selector SELECTED_FOOD", this.selectedFoodToCheck)
+		console.log("\x1b[41m"+"offcanvas","CUSTOM_FOOD", this.userCustomFood)
+		console.log("\x1b[41m"+"offcanvas","SELECTED_FOOD", this.selectedFoodToCheck)
 		
 			this.registrationForm = this.formBuilder.group({
 			name: ['', Validators.required],
