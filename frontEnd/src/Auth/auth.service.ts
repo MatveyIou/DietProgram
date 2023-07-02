@@ -119,7 +119,7 @@ export class AuthService {
       Authorization: "Bearer " + this.getToken(),
       User_ID:this.getSessionKeyUserStatsID()!
     });
-    return this.http.get<any>(this.baseUrl+"/home/get/next",{headers})
+    return this.http.get<IUserPreset>(this.baseUrl+"/home/get/next",{headers})
   }
   pushCustomProduct(newProduct:ICustomFood,indexType:number): Observable<any>{
     const headers = new HttpHeaders({

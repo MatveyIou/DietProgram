@@ -183,10 +183,10 @@ export class LoginController {
     //console.log("req.body: ", req.body)
     const res= (await this.userService.addNextMainData(userID))
     if(!res)
-      console.log("not found res for push")
+      console.log("not found res for get next")
     else
-      console.log("res for push", res)
-    return res
+      console.log(this.messageGET,"res for next", res)
+    return res.mainData[res.mainData.length-1]
    }
    @UseGuards(JwtAuthGuard)
    @Put('home/product/put/edit')
