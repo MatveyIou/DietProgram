@@ -28,43 +28,59 @@ export class DateCarroselComponent implements OnInit {
   count: number = 2 ;
   currentDateData=this.userData.mainData
 
-
+  trackByFn(index: number, item: any): any {
+    return item.id; // Replace 'id' with the actual unique identifier property in your 'userDatesCarousel' items
+  }
   constructor(private activeRoute: ActivatedRoute,
     private dateCarroselService: DateCarroselService,
-    private cdr: ChangeDetectorRef) {
+) {
     this.getUserDatesCarousel()
   }
 
+  //todo it will get ALL of dates. we should limit it
   async getUserDatesCarousel(): Promise<void> {
     this.userData.mainData.forEach(data => {
       this.userDatesCarousel.push(data.date)
     });
   }
-
+  onSlide(event: NgbSlideEvent) {
+    // Code to execute before the slide animation starts
+    console.log('Before slide animation:', event);
+    // Your code here
+  }
   async ngOnInit(): Promise<void> {
     this.addDateTemp();
     console.log("this.activeIndex",this.activeIndex)
     console.log("\x1b[41m" + "date-carrosel init","this.userDatesCarousel", this.userDatesCarousel)
   }
-  private addDateTemp(): void {
-    if(this.activeIndex>=this.userDatesCarousel.length-1){
+  public addDateTemp(): void {
+
+    /**
+     * will be using this.userDatesCarousel.length-2 inside of -1
+     * why?
+     * we are using (slid) instead of (slide)
+     * so the animation wont be junky because it updates the ngFor in the html
+     * we will update a new date when it will be BEFORE the LAST index
+    **/ 
+    if(this.activeIndex>=this.userDatesCarousel.length-2){
     const lastDateStats = this.userDatesCarousel[this.userDatesCarousel.length - 1].split("/")//dd/mm/yy
     const nextDate = new Date("20" + lastDateStats[2] + "/" + lastDateStats[1] + "/" + lastDateStats[0])
     nextDate.setDate(nextDate.getDate() + 1)
     this.userDatesCarousel.push(nextDate.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' }))
+    
     console.log("adding userDatesCarousel")
     this.setNextNewData()
     }
     else{
       console.log("userDatesCarousel doesnt need another date")
     }
-    //this.synchroniesDateData()
   }
-  private async synchroniesDateData(){
-    while(this.currentDateData.length<this.userDatesCarousel.length)
-      await this.setNextNewData()
-  }
+
   async addDateDay(event: NgbSlideEvent): Promise<void> {
+    if (event.paused) {
+      // This code will run right before the animation starts
+      console.log('Animation is about to start!');
+    }
     this.activeIndex = parseInt(event.current.slice(10))
     console.log("Count: " + this.count + "  Slide Index: " + this.activeIndex)
 
@@ -73,8 +89,8 @@ export class DateCarroselComponent implements OnInit {
       this.count++;
     }
   }
-
   async nextClick() {
+    
     this.carousel.next()
     this.activeIndex++
   }
@@ -86,22 +102,6 @@ export class DateCarroselComponent implements OnInit {
   }
   async setNextNewData() {
     const newValue:IUserPreset = await lastValueFrom(this.dateCarroselService.getNextNewData())
-    this.cdr.detectChanges()
-    console.log("newValue",newValue)
-    // const fixedValue ={
-    //   date: newValue.date,
-    //   kcal: newValue.kcal,
-    //   kcal_left: newValue.kcal_left,
-    //   burned: newValue.burned,
-    //   carbs_total: newValue.carbs_total,
-    //   carbs: newValue.carbs,
-    //   protein_total: newValue.protein_total,
-    //   protein: newValue.protein,
-    //   fat_total: newValue.fat_total,
-    //   fat: newValue.fat,
-    //   selectedFood: newValue.selectedFood
-    // }
-    // console.log("newValue",fixedValue)
     this.currentDateData.push(newValue)
     console.log("\x1b[34m" + "This is our new this.currentDateData", this.currentDateData)
 }

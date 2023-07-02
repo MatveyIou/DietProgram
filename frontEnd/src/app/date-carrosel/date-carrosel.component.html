@@ -1,15 +1,14 @@
 <div (touchstart)="posIni = $event.changedTouches[0].pageX"
       (touchend)="move($event.changedTouches[0].pageX)">
-  
-  <ngb-carousel style="z-index: 0;" id="myCarousel"
-    #carousel
-    [showNavigationArrows]="false"
-    [showNavigationIndicators]="showNavigationIndicators"
-    [interval]="0" 
-    [wrap]="false"
-    (slide)="addDateDay($event)"
-  >
-    <ng-template ngbSlide *ngFor="let date of userDatesCarousel;let i = index; let last = last">
+    <ngb-carousel style="z-index: 0;" id="myCarousel"
+      #carousel
+      [showNavigationArrows]="false"
+      [showNavigationIndicators]="showNavigationIndicators"
+      [interval]="0" 
+      [wrap]="false"
+      (slid)="addDateDay($event)"
+    >
+    <ng-template ngbSlide *ngFor="let date of userDatesCarousel; let i = index; let last = last">
       <div tabindex="0">
         <button class="carousel-control-prev" (click)="prevClick()">
           <span class="carousel-control-prev-icon"></span>
@@ -18,19 +17,17 @@
           <span class="carousel-control-next-icon"></span>
         </button>
       </div>
+      
       <div class="picsum-img-wrapper text-center">  
         <p>{{date}}</p>
       </div>
-	  <ng-container *ngIf="!last">
-		<app-selector
-		  [currentDateData]="currentDateData[i]"
-		  (valueSelectedFoodPass)="passUserProductUpdate($event)">
-		</app-selector>
-	  </ng-container>
+      <ng-container *ngIf="!last">
+        <app-selector
+          [currentDateData]="currentDateData[i]"
+          (valueSelectedFoodPass)="passUserProductUpdate($event)">
+        </app-selector>
+      </ng-container>
     </ng-template>
-	
-  </ngb-carousel>
-  
-  
+    
+    </ngb-carousel>
 </div>
-
