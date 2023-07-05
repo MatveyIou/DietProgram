@@ -66,7 +66,7 @@ export class AuthService {
     this.removeToken();
     this.isAuthenticated$.next(false);
     this.removeSessionKeyUserStatsID()
-    this.redirect()
+    this.redirect("Looks like the session is expired")
     console.log("logged out")
   }
 
@@ -168,9 +168,6 @@ export class AuthService {
       this.logout()
     }
   }
-  /**
-   * TODO check if sending jwt to validate is correct with header
-  */
   private validateToken(): Observable<TokenValidationResponse> {
     const headers = new HttpHeaders({
       Authorization: "Bearer " + this.getToken()
@@ -186,9 +183,9 @@ export class AuthService {
       })
     );
   }
-  private redirect(): void {
+  private redirect(errorText: string): void {
     console.log("redirecting to /login")
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login'], { queryParams: { errorText } });
   }
   getSessionKeyUserStatsID(){
     //console.log("getting SessionKeyUserStatsID ",sessionStorage.getItem('userID'))

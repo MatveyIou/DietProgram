@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   isRegistered: boolean = false;
   errorMessage: string | undefined;
   isAuthenticatedSubscription: Subscription | undefined;
+  queryParamsSubscription: Subscription | undefined;;
 
   /**
    * Contractor runs before the component fully initialized.
@@ -67,11 +68,19 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.isAuthenticatedSubscription = this.authService.subscribeIsAuthenticatedObservable()
 
+    this.queryParamsSubscription= this.activatedRoute.queryParams.subscribe(params => {
+      //this may cause troubles //Todo maybe fix?
+      const error = params['errorText'];
+      console.log("errorMessege:", error)
+      this.errorMessage=error
+    });
+
     this.checkInitParams()
     this.loginFormBuilder()
   }
   ngOnDestroy() {
     this.authService.unsubscribeIsAuthenticatedObservable(this.isAuthenticatedSubscription!)
+    this.queryParamsSubscription?.unsubscribe
   }
   /**
    * submitting the form
