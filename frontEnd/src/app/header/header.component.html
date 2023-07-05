@@ -24,19 +24,19 @@
 
     <div class="row m-0 mb-5 align-items-center">
       <div class="col ">
-        <p>{{userData.mainData[selectorDate()].kcal}}</p>
+        <p>{{userData.mainData[indexDisplay].kcal}}</p>
         <p class="h6">EATEN</p>
 
       </div>
       <div class="col">
         <app-progressbar
-        [kcal_left]="userData.mainData[selectorDate()].kcal_left"
-        [kcal]="userData.mainData[selectorDate()].kcal"
-        [burned]="userData.mainData[selectorDate()].burned">
+        [kcal_left]="userData.mainData[indexDisplay].kcal_left"
+        [kcal]="userData.mainData[indexDisplay].kcal"
+        [burned]="userData.mainData[indexDisplay].burned">
         </app-progressbar>
       </div>
       <div class="col">
-        <p>{{userData.mainData[selectorDate()].burned}}</p>
+        <p>{{userData.mainData[indexDisplay].burned}}</p>
         <p class="h6">BURNED</p>
       </div>
     </div>
@@ -44,18 +44,18 @@
       <div class="col">
         <p class="h6">CARBS</p>
         <div>----</div>
-        <p>{{userData.mainData[selectorDate()].carbs}} / {{userData.mainData[selectorDate()].carbs_total}}</p>
+        <p>{{userData.mainData[indexDisplay].carbs}} / {{userData.mainData[indexDisplay].carbs_total}}</p>
 
       </div>
       <div class="col">
         <p class="h6">PROTEIN</p>
         <div>----</div>
-        <p>{{userData.mainData[selectorDate()].protein}} / {{userData.mainData[selectorDate()].protein_total}}</p>
+        <p>{{userData.mainData[indexDisplay].protein}} / {{userData.mainData[indexDisplay].protein_total}}</p>
       </div>
       <div class="col">
         <p class="h6">FAT</p>
         <div>----</div>
-        <p>{{userData.mainData[selectorDate()].fat}} / {{userData.mainData[selectorDate()].fat_total}}</p>
+        <p>{{userData.mainData[indexDisplay].fat}} / {{userData.mainData[indexDisplay].fat_total}}</p>
       </div>
     </div>
   </div>

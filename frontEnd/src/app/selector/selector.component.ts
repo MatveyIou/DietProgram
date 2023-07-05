@@ -16,7 +16,7 @@ export class SelectorComponent{
   @ViewChild(OffcanvasComponent) child: OffcanvasComponent | undefined
 
   @Output() valuePicked!: Subscription
-  @Output() valueSelectedFoodPass = new EventEmitter<ICustomFood[][]>();
+  @Output() dataEmitter = new EventEmitter<ICustomFood[][]>();
 
   @Input() currentDateData!:IUserPreset
   selectedFood:ICustomFood[][]=[[],[],[],[]]
@@ -64,18 +64,6 @@ export class SelectorComponent{
       element.classList.add("buttonCustomSection");
     });
   }
-  // isAdded(index:number){
-  //   var flag=false
-  //   console.log("Checking if user is added claries to "+this.calorieDisplay[index])
-  //   this.child!.userProducts.userCustomProducts[index].forEach(product => {
-  //     if (product.selected){
-  //       this.calorieTotal[index]+= product.kcal_total
-  //       flag=true
-  //     }
-  //   });
-  //   return flag
-
-  // }
 
     newFoodPicked(event : { product: ICustomFood, canvasNumber: number }){
       console.log("emitted event ", event);
@@ -97,6 +85,8 @@ export class SelectorComponent{
 
       this.selectedFood[indexType].push(product)
     }
+
+    //todo re check this
     async updateMainData(event:any){
       try {
         const response = await lastValueFrom(this.selectorService.updateSelectedFood(this.currentDateData.date,this.selectedFood));
@@ -104,16 +94,18 @@ export class SelectorComponent{
         this.selectedFood=response
         this.cdr.detectChanges();
         this.updateSumCalories();
-        this.passSelectedFoodEvent();
+        //todo this is a quick way of sending data to the header
+        this.dataEmitter.emit(this.selectedFood)
+        //this.passSelectedFoodEvent();
       } catch (error : any) {
         console.log("we caught an error", error);
         }
       
     }
-    passSelectedFoodEvent(){
-      console.log("EVEN EMMITER: ",this.selectedFood)
-      this.valueSelectedFoodPass.emit(this.selectedFood)
-    }
+    // passSelectedFoodEvent(){
+    //   console.log("EVEN EMMITER: ",this.selectedFood)
+    //   this.valueSelectedFoodPass.emit(this.selectedFood)
+    // }
 
     updateSumCalories(){
       var sumNumbers=0

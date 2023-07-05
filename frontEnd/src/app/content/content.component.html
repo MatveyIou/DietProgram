@@ -1,2 +1,2 @@
-<app-header></app-header>
-<app-date-carrosel></app-date-carrosel>
+<app-header  [indexDisplay]="indexView"></app-header>
+<app-date-carrosel (indexChanged)="updateIndex($event)"></app-date-carrosel>

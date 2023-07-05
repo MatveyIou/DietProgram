@@ -24,7 +24,7 @@
       <ng-container *ngIf="!last">
         <app-selector
           [currentDateData]="currentDateData[i]"
-          (valueSelectedFoodPass)="passUserProductUpdate($event)">
+          (dataEmitter)="passdataEmitter($event)">
         </app-selector>
       </ng-container>
     </ng-template>

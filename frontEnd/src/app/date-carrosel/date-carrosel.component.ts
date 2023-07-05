@@ -18,7 +18,7 @@ export class DateCarroselComponent implements OnInit {
   userData: userData = this.activeRoute.snapshot.data['Data']!
   userDatesCarousel: string[] = []
 
-  @Output() valueChanged = new EventEmitter<userData["mainData"]>();
+  @Output() indexChanged = new EventEmitter<number>();
 
   posIni: any;
   activeIndex: number = 0
@@ -53,6 +53,9 @@ export class DateCarroselComponent implements OnInit {
     console.log("this.activeIndex",this.activeIndex)
     console.log("\x1b[41m" + "date-carrosel init","this.userDatesCarousel", this.userDatesCarousel)
   }
+  ngOnDestroy(): void {
+
+  }
   public addDateTemp(): void {
 
     /**
@@ -77,17 +80,13 @@ export class DateCarroselComponent implements OnInit {
   }
 
   async addDateDay(event: NgbSlideEvent): Promise<void> {
-    if (event.paused) {
-      // This code will run right before the animation starts
-      console.log('Animation is about to start!');
-    }
-    this.activeIndex = parseInt(event.current.slice(10))
-    console.log("Count: " + this.count + "  Slide Index: " + this.activeIndex)
 
+    console.log("Count: " + this.count + "  Slide Index: " + this.activeIndex)
     if (event.direction === "start" && this.count - 1 === this.activeIndex) {
       this.addDateTemp()
       this.count++;
     }
+    this.indexChanged.emit(this.activeIndex)
   }
   async nextClick() {
     
@@ -127,45 +126,44 @@ export class DateCarroselComponent implements OnInit {
 
     if (offset > 100) this.carousel!.next();
   }
-  passUserProductUpdate(event: ICustomFood[][]) {
-    const newMainData = this.buildMainData(event)
-    console.log("There is new IUserPreset[] Emiter: ", newMainData)
-    this.valueChanged.emit(newMainData)
+  passdataEmitter(event: ICustomFood[][]) {
+    console.log("There is new dataEmitter Emiter: ", event)
+
   }
 
-  buildMainData(event: ICustomFood[][]): IUserPreset[] {
-    const newMainData: IUserPreset[] = []
+  // buildMainData(event: ICustomFood[][]): IUserPreset[] {
+  //   const newMainData: IUserPreset[] = []
 
-    this.userDatesCarousel.forEach(date => {
-      newMainData.push(this.newMainData(date, event))
-    });
-    return newMainData
-  }
+  //   this.userDatesCarousel.forEach(date => {
+  //     newMainData.push(this.newMainData(date, event))
+  //   });
+  //   return newMainData
+  // }
 
-  newMainData(date: string, event: ICustomFood[][]): IUserPreset {
-    return {
-      date: date,
-      kcal: this.sumSelectedCalorieSelectedFood(event, 'kcal_total'),
-      kcal_left: 0,
-      burned: 0,
-      carbs_total: 0,
-      carbs: this.sumSelectedCalorieSelectedFood(event, 'carbs'),
-      protein_total: 0,
-      protein: this.sumSelectedCalorieSelectedFood(event, 'protein'),
-      fat_total: 0,
-      fat: this.sumSelectedCalorieSelectedFood(event, 'fat'),
-      selectedFood: event
-    }
-  }
+  // newMainData(date: string, event: ICustomFood[][]): IUserPreset {
+  //   return {
+  //     date: date,
+  //     kcal: this.sumSelectedCalorieSelectedFood(event, 'kcal_total'),
+  //     kcal_left: 0,
+  //     burned: 0,
+  //     carbs_total: 0,
+  //     carbs: this.sumSelectedCalorieSelectedFood(event, 'carbs'),
+  //     protein_total: 0,
+  //     protein: this.sumSelectedCalorieSelectedFood(event, 'protein'),
+  //     fat_total: 0,
+  //     fat: this.sumSelectedCalorieSelectedFood(event, 'fat'),
+  //     selectedFood: event
+  //   }
+  // }
 
-  sumSelectedCalorieSelectedFood(event: ICustomFood[][], prop: keyof ICustomFood): number {
-    var sum = 0
-    const variable = prop
-    event.forEach(type => {
-      type.forEach(food => {
-        sum += Number(food[variable])
-      })
-    });
-    return sum
-  }
+  // sumSelectedCalorieSelectedFood(event: ICustomFood[][], prop: keyof ICustomFood): number {
+  //   var sum = 0
+  //   const variable = prop
+  //   event.forEach(type => {
+  //     type.forEach(food => {
+  //       sum += Number(food[variable])
+  //     })
+  //   });
+  //   return sum
+  // }
 }

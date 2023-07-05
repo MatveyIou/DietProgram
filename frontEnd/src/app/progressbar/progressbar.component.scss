@@ -13,3 +13,11 @@
     font-weight: bold;
     text-align: center;
   }
+  @media (max-width: 450px) {
+  *{
+    font-size: 18px;
+  }
+  p{
+    font-size: 14px;
+  }
+}

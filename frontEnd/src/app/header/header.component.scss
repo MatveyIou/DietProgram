@@ -10,6 +10,22 @@
     color: #222;
   }
 }
+
+
+.col{
+  p{
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 450px) {
+  .col{
+    p{
+      font-size: 14px;
+    }
+  }
+  
+  }
 .up-button{
   visibility: hidden;
 }

@@ -6,6 +6,7 @@ import { ContentComponent } from '../content/content.component';
 import { HeaderService } from './header.service';
 import { lastValueFrom } from 'rxjs';
 
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -13,18 +14,22 @@ import { lastValueFrom } from 'rxjs';
 })
 export class HeaderComponent {
   userData!: userData
-  @Input() elementRef!: ContentComponent;
+  //@Input() elementRef!: ContentComponent;
   username!: string
+  data: any;
+
+  @Input() indexDisplay!: number;
   constructor(
     private authService: AuthService,
     private router: Router,
     private activeRoute: ActivatedRoute,
-    private headerService: HeaderService
+    private headerService: HeaderService,
+
   ) {
     this.fetchData()//todo this maybe redandent
   }
 
-
+//todo re catch data from the database to get the newest data
   async fetchData() {
       this.userData = await this.activeRoute.snapshot.data['Data'];
       await this.getUserName();
@@ -34,12 +39,11 @@ export class HeaderComponent {
       this.username = await lastValueFrom(this.headerService.getUserName());
   }
   async ngOnInit(): Promise<void> {
-    this.getUserName()
     this.htmlHeaderAnim()
+    console.log(this.userData.mainData[this.indexDisplay])
+    this.userData.mainData[this.indexDisplay].carbs=100
   }
-  selectorDate() {
-    return 0
-  }
+
   logoutAction() {
     this.authService.logout();
     this.router.navigate(['/login']);
