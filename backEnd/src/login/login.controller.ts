@@ -178,7 +178,7 @@ export class LoginController {
     */
    @UseGuards(JwtAuthGuard)
    @Get('home/get/next')
-   async pushCustomProduct(@Headers('User_ID') userID:string) {
+   async getNextDate(@Headers('User_ID') userID:string) {
     console.log(this.messageGET,"\ntrying to get next mainDATA for:", (await this.userService.findOneUser(userID)).email)
     //console.log("req.body: ", req.body)
     const res= (await this.userService.addNextMainData(userID))
@@ -216,53 +216,17 @@ export class LoginController {
       console.log("res for push")
     return res
    }
-  //  private makeDateStringArray(mainData:IUserPreset[]){
-  //   const newDates:string[]=[]
-    
-  //   mainData.forEach(data => {
-  //     console.log("data ",data.date)
-  //     newDates.push(data.date)
-  //   });
-  //   return newDates
-  //  }
-  //  @UseGuards(JwtAuthGuard)
-  //  @Get('home/products/:index')
-  //  async getSelectedItems(@Headers('User_ID') userID:string,@Param('index') index:number){
-  //   console.log(this.messageGET,"\ntrying to get SelectedFood for:", (await this.userService.findOneUser(userID)).email,"index is ",index)
-  //   const res=(await this.userService.findOneUserData(userID)).mainData[index].selectedFood
-  //   if(!res)
-  //     console.log("SelectedProducts not found res")
-  //   else
-  //     console.log("SelectedProducts found res", res)
-  //   return res
-  //  }
-  //  @Post('home/product/post/:id')
-  //  async saveCustomProduct(@Request() req,@Param('id') id: string,@Query('index') index:number) {
-  //   const reqBody= req.body
-  //   console.log(this.messagePOST,"\nWe gotten ", reqBody," id ",id," index ",index)
-  //   var dateIndex=getDateIndex()
-
-  //   const res= await this.userService.pushCustomProduct(id,dateIndex,reqBody,index)
-  //   console.log("found", res)
-  //   return res
-  //  }
-  //  @Delete('home/product/delete/:id')
-  //  async deleteCustomProduct(
-  //   @Param('id') id: string,@Query('idproduct') idProduct: string,@Query('index') index: number) {
-  //   console.log(this.messageDELETE, "\nWe gotten id: ", id," idProduct: ",idProduct," index:",index)
-  //   const res= await this.userService.deleteCustomProduct(id, idProduct, index)
-  //   console.log("deleteCustomProduct() function result: ", res)
-  //   return res
-  //  }
-  //  @Put('home/product/put/:id')
-  //  async updateCustomSelectedProducts(
-  //   @Request() req,@Param('id') id: string,@Query('index') index: number){
-  //     const reqBody= req.body
-  //     console.log(this.messagePUT,"\nWe gotten req.body: ", reqBody ,"We gotten index: ", index)
-  //     const res= await this.userService.updateCustomProducts(reqBody,id,index)
-  //     console.log("deleteCustomProduct() function result: ", res)
-  //     return res
-  //   }
+   @Put('home/product/put')
+   async pushCustomProduct(@Headers('User_ID') userID:string,@Request() req,@Query('index') indexType:number) {
+    console.log(this.messagePUT,"\ntrying to push 1 customProduct for:", (await this.userService.findOneUser(userID)).email)
+    console.log("req.body: ", req.body, "indexType: ", indexType)
+    const res= (await this.userService.pushNewCustomFood(userID,req.body,indexType))
+    if(!res)
+      console.log("not found res for push")
+    else
+      console.log("res for push", res)
+    return res
+   }
    @UseGuards(JwtAuthGuard)
    @Get('validate')
    isValid(@Request() req) {
