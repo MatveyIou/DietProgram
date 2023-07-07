@@ -122,10 +122,30 @@ export class UserService {
 
   async updateSelectedFood(userId: string,date:string, selectedFood: ICustomFood[][]): Promise<IUserData> {
     const userData = await this.findOneUserData(userId)
-    userData.mainData[userData.mainData.findIndex(data => data.date === date)]
-    .selectedFood=selectedFood
-
+    const indexUpdate= userData.mainData.findIndex(data => data.date === date)
+    userData.mainData[indexUpdate].selectedFood=selectedFood
+    this.updateAttributes(userData.mainData[indexUpdate])
     return await userData.save()
+  }
+  private updateAttributes(mainDataUpdate:IUserPreset){
+    var kcal_total=0
+    var carbs=0
+    var protein=0
+    var fat=0
+
+    mainDataUpdate.selectedFood.forEach(meals => {
+      meals.forEach(foods =>{
+        kcal_total+=foods.kcal_total
+        carbs+=foods.carbs
+        protein+=foods.protein
+        fat+=foods.fat
+      })
+    });
+
+    mainDataUpdate.kcal=kcal_total
+    mainDataUpdate.carbs=carbs
+    mainDataUpdate.protein=protein
+    mainDataUpdate.fat=fat
   }
   //todo maybe redundant 
   async removeSelectedFood(userId: string,dateIndex: string,indexType:number,indexPos:number): Promise<IUserData> {
