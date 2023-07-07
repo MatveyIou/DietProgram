@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
@@ -13,11 +13,18 @@ export class ProgressbarComponent {
   percent_kcal: number | undefined;
   total_kcal_left: number | undefined;
 
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes)
+    if (changes['kcal'] || changes['burned']) {
+      this.calcSum();
+    }
+  }
   ngOnInit(): void {
+    this.calcSum()
+  }
+  calcSum(){
     this.total_kcal_left= this.kcal_left - this.kcal + this.burned
     this.percent_kcal=this.calcPercent();
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
   }
   /**
    * calcs the percent that the person has left to eat

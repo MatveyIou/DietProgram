@@ -30,9 +30,9 @@
       </div>
       <div class="col">
         <app-progressbar
-        [kcal_left]="userData.mainData[indexDisplay].kcal_left"
-        [kcal]="userData.mainData[indexDisplay].kcal"
-        [burned]="userData.mainData[indexDisplay].burned">
+        [kcal_left]="this.kcal_left? this.kcal_left : this.userData.mainData[indexDisplay].kcal_left"
+        [kcal]="this.kcal? this.kcal : this.userData.mainData[indexDisplay].kcal"
+        [burned]="this.burned? this.burned : this.userData.mainData[indexDisplay].burned">
         </app-progressbar>
       </div>
       <div class="col">

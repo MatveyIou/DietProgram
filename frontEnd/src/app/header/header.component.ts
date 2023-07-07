@@ -17,6 +17,10 @@ import { UserStatsResolver } from 'src/resolvers/user-stats.resolver';
 })
 export class HeaderComponent {
   userData=this.activeRoute.snapshot.data['Data'];
+  kcal_left:number | undefined
+  kcal:number | undefined
+  burned :number | undefined
+
   //@Input() elementRef!: ContentComponent;
   username!: string
   data: any;
@@ -61,8 +65,14 @@ export class HeaderComponent {
   }
   async ngOnInit(): Promise<void> {
     await this.getUserName();
+    this.updatePassableData();
     this.htmlHeaderAnim()
     //this.userData.mainData[this.indexDisplay].carbs=100
+  }
+  updatePassableData() {
+    this.kcal_left= this.userData.mainData[this.indexDisplay].kcal_left
+    this.kcal= this.userData.mainData[this.indexDisplay].kcal
+    this.burned = this.userData.mainData[this.indexDisplay].burned
   }
 
   logoutAction() {
