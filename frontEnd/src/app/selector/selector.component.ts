@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { OffcanvasComponent } from '../offcanvas/offcanvas.component';
 
 import { ActivatedRoute } from '@angular/router';
@@ -7,16 +7,19 @@ import { ICustomFood, IUserPreset, userData } from 'src/models/user-data.model';
 import { Subscription, lastValueFrom } from 'rxjs';
 import { SelectorService } from './selector.service';
 
+
+
 @Component({
   selector: 'app-selector',
   templateUrl: './selector.component.html',
-  styleUrls: ['./selector.component.scss']
+  styleUrls: ['./selector.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectorComponent{
   @ViewChild(OffcanvasComponent) child: OffcanvasComponent | undefined
 
   @Output() valuePicked!: Subscription
-  @Output() dataEmitter = new EventEmitter<ICustomFood[][]>();
+  @Output() eventEmitterForHeader = new EventEmitter<any>();
 
   @Input() currentDateData!:IUserPreset
   selectedFood:ICustomFood[][]=[[],[],[],[]]
@@ -28,7 +31,14 @@ export class SelectorComponent{
 
   constructor(private activeRoute: ActivatedRoute,
     private selectorService: SelectorService,
-    private cdr: ChangeDetectorRef){
+    private cdr: ChangeDetectorRef,
+    ){
+      
+    }
+    makeChanges() {
+      // Make your changes here
+      
+      // Trigger change detection in the header component
       
     }
   async fetchSelectedFood(){
@@ -38,6 +48,7 @@ export class SelectorComponent{
     
     }
 
+    
   async ngOnInit(): Promise<void> {
     console.log("\x1b[41m"+"selector init","this.currentDateData.date", this.currentDateData.date)
     await this.fetchSelectedFood()
@@ -93,9 +104,10 @@ export class SelectorComponent{
         console.log("Handle successful to update selected food", response);
         this.selectedFood=response
         this.cdr.detectChanges();
+        //this.headerComponent.cdr.detectChanges();
         this.updateSumCalories();
         //todo this is a quick way of sending data to the header
-        this.dataEmitter.emit(this.selectedFood)
+        this.eventEmitterForHeader.emit()
         //this.passSelectedFoodEvent();
       } catch (error : any) {
         console.log("we caught an error", error);

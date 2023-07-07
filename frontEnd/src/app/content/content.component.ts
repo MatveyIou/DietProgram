@@ -7,9 +7,6 @@ import { ICustomFood, userData } from 'src/models/user-data.model';
   styleUrls: ['./content.component.scss']
 })
 export class ContentComponent {
-  indexView = 0
-  updateIndex(event:number){
-    console.log("we have index number", event)
-    this.indexView=event
-  }
+  
+  
 }

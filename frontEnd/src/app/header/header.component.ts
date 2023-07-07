@@ -1,10 +1,13 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { AuthService } from '../../auth/auth.service'
 import { Router, ActivatedRoute } from '@angular/router';
-import { userData } from '../../models/user-data.model';
+import { ICustomFood, IUserPreset, userData } from '../../models/user-data.model';
 import { ContentComponent } from '../content/content.component';
 import { HeaderService } from './header.service';
-import { lastValueFrom } from 'rxjs';
+import { Subscription, lastValueFrom } from 'rxjs';
+import { HomeService } from '../home/home.service';
+import { UserStatsResolver } from 'src/resolvers/user-stats.resolver';
+
 
 
 @Component({
@@ -13,35 +16,53 @@ import { lastValueFrom } from 'rxjs';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  userData!: userData
+  userData=this.activeRoute.snapshot.data['Data'];
   //@Input() elementRef!: ContentComponent;
   username!: string
   data: any;
+  count=0
 
-  @Input() indexDisplay!: number;
+  //private changeSubscription!: Subscription;
+
+  indexDisplay=0
   constructor(
     private authService: AuthService,
     private router: Router,
     private activeRoute: ActivatedRoute,
     private headerService: HeaderService,
-
+    private cdr: ChangeDetectorRef,
+    private userStatsResolver:UserStatsResolver
   ) {
-    this.fetchData()//todo this maybe redandent
   }
-
-//todo re catch data from the database to get the newest data
-  async fetchData() {
-      this.userData = await this.activeRoute.snapshot.data['Data'];
-      await this.getUserName();
+  updateIndex(event:number){
+    console.log("we have index number", event)
+    this.indexDisplay=event
   }
+  // ngDoCheck() {
+  //   this.count+=1
+  //   if (this.changeSubscription) {
+  //     this.changeSubscription.unsubscribe();
+  //   }
+  //   //TODO find another way of getting data from selector this function runs alot of times
 
+  //   this.changeSubscription = this.sharedService.dataObservable.subscribe(data => {
+  //       console.log("changes made for the HEADER",this.count);
+  //     });
+    
+  // }
+  public async getUpdatedData(indexNumber:number){
+    const newData = await lastValueFrom(this.userStatsResolver.resolve())
+    this.userData=newData
+    console.log(newData,"LOL")
+    
+  }
   private async getUserName(): Promise<void> {
       this.username = await lastValueFrom(this.headerService.getUserName());
   }
   async ngOnInit(): Promise<void> {
+    await this.getUserName();
     this.htmlHeaderAnim()
-    console.log(this.userData.mainData[this.indexDisplay])
-    this.userData.mainData[this.indexDisplay].carbs=100
+    //this.userData.mainData[this.indexDisplay].carbs=100
   }
 
   logoutAction() {

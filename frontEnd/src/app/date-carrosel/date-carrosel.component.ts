@@ -18,8 +18,8 @@ export class DateCarroselComponent implements OnInit {
   userData: userData = this.activeRoute.snapshot.data['Data']!
   userDatesCarousel: string[] = []
 
-  @Output() indexChanged = new EventEmitter<number>();
-
+  @Output() eventIndexChanged = new EventEmitter<number>();
+  @Output() eventEmitterIndex = new EventEmitter<number>();
   posIni: any;
   activeIndex: number = 0
 
@@ -86,7 +86,7 @@ export class DateCarroselComponent implements OnInit {
       this.addDateTemp()
       this.count++;
     }
-    this.indexChanged.emit(this.activeIndex)
+    this.eventIndexChanged.emit(this.activeIndex)
   }
   async nextClick() {
     
@@ -126,8 +126,10 @@ export class DateCarroselComponent implements OnInit {
 
     if (offset > 100) this.carousel!.next();
   }
-  passdataEmitter(event: ICustomFood[][]) {
-    console.log("There is new dataEmitter Emiter: ", event)
+  passEmitter(indexUpdate:number) {
+    console.log("There is new Emitter")
+    this.eventEmitterIndex.emit(indexUpdate)
+    //this.userData.mainData[indexUpdate].selectedFood=event
 
   }
 

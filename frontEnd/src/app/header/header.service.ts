@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, lastValueFrom, map, tap, throwError } from 'rxjs';
 import { AuthService } from 'src/auth/auth.service';
-import { userData } from '../../models/user-data.model';
+import { ICustomFood, userData } from '../../models/user-data.model';
 import { environment } from 'src/environment/environment';
 import { IUser } from 'src/models/user.model';
 
@@ -27,5 +27,6 @@ export class HeaderService {
     })
   );
 }
+
   }
   
