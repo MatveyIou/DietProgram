@@ -13,7 +13,6 @@ import { SelectorService } from './selector.service';
   selector: 'app-selector',
   templateUrl: './selector.component.html',
   styleUrls: ['./selector.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectorComponent{
   @ViewChild(OffcanvasComponent) child: OffcanvasComponent | undefined
