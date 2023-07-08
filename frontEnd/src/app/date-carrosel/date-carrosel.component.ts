@@ -28,9 +28,6 @@ export class DateCarroselComponent implements OnInit {
   count: number = 2 ;
   currentDateData=this.userData.mainData
 
-  trackByFn(index: number, item: any): any {
-    return item.id; // Replace 'id' with the actual unique identifier property in your 'userDatesCarousel' items
-  }
   constructor(private activeRoute: ActivatedRoute,
     private dateCarroselService: DateCarroselService,
 ) {
