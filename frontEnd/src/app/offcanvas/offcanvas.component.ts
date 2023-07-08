@@ -7,7 +7,7 @@ import { OffcanvasService } from './offcanvas.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ICustomFood, userData } from 'src/models/user-data.model';
-import { UserCustomFoodResolver } from 'src/resolvers/user-custom-food.resolver';
+
 
 
 @Component({
@@ -48,15 +48,13 @@ export class OffcanvasComponent {
 		private customOffcanvasService: OffcanvasService,
 		private elementRef: ElementRef,
 		private renderer: Renderer2,
-		private userCustomFoodResolver: UserCustomFoodResolver,
 		private cdr: ChangeDetectorRef
 	) { }
-
+		//todo code clean up!!!
 	async ngOnInit(): Promise<void> {
 		//so this wont start "undefined"
 		this.userCustomFood = this.activeRoute.snapshot.data['Custom_Food']
 		this.customFoodDisplay = this.userCustomFood[this.canvasNumber]
-		this.storeDeletedSelected()
 		this.registrationForm = this.formBuilder.group({
 			name: ['', Validators.required],
 			kcal_total: ['', [Validators.required, Validators.pattern("^[0-9]+([.][0-9]{1,2})?$")]],
@@ -65,19 +63,29 @@ export class OffcanvasComponent {
 			fat: ['', [Validators.required, Validators.pattern("^[0-9]+([.][0-9]{1,2})?$")]]
 		})
 	}
-	onView() {
-		if(this.deletedSelectedFood.length===0)
-			this.storeDeletedSelected()
-		this.customFoodDisplay = this.userCustomFood[this.canvasNumber]
-		console.log("\x1b[45m" + "offcanvas onView()", "CUSTOM_FOOD", this.userCustomFood)
-		console.log("\x1b[45m" + "offcanvas onView()", "SELECTED_FOOD", this.selectedFoodToCheck)
-
+	openStaticBackdrop(customFoods:ICustomFood[][]) {
+		this.onView(customFoods)
+		this.offcanvasService.open(this.content, { backdrop: 'static', position: 'end' },);
+		this.renderer.addClass(this.elementRef.nativeElement.ownerDocument.body, 'no-scroll');
 	}
-	//todo this is not efficient this is n^3
+	async onView(newCustomFoods:ICustomFood[][]) {
+		this.userCustomFood=newCustomFoods
+		this.customFoodDisplay = this.userCustomFood[this.canvasNumber]
+		if(this.checkSelectedIsDeleted())
+			this.storeDeletedSelected()
+		
+		console.log("\x1b[45m" + "offcanvas onView()", "CUSTOM_FOOD", this.userCustomFood[this.canvasNumber])
+		console.log("\x1b[45m" + "offcanvas onView()", "SELECTED_FOOD", this.selectedFoodToCheck[this.canvasNumber])
+		console.log("\x1b[45m" + "offcanvas onView()", "deletedSelectedFood", this.deletedSelectedFood)
+	}
+	checkSelectedIsDeleted() {
+		return this.userCustomFood[this.canvasNumber].length<this.selectedFoodToCheck[this.canvasNumber].length
+	}
+	//todo this is not efficient this is n^2
 	storeDeletedSelected() {
-		for (let i = 0; i < this.selectedFoodToCheck.length; i++) {
-			const selectedFoods = this.selectedFoodToCheck[i];
-			const userFoods = this.userCustomFood[i];
+		console.log("running storeDeletedSelected()")
+			const selectedFoods = this.selectedFoodToCheck[this.canvasNumber];
+			const userFoods = this.userCustomFood[this.canvasNumber];
 
 			selectedFoods.forEach(food => {
 				let flagFound = false
@@ -89,9 +97,10 @@ export class OffcanvasComponent {
 				}
 				if (!flagFound) {
 					this.deletedSelectedFood.push(food)
+					console.log("STORING DELETED DATA")
 				}
 			});
-		}
+		
 	}
 
 	selectProduct(product: ICustomFood) {
@@ -151,21 +160,7 @@ export class OffcanvasComponent {
 			this.errorMessage = "Theres an error"
 		}
 	}
-	// async getProducts(): Promise<void> {
-	// 	this.customOffcanvasService.getSavedProducts().subscribe({
-	// 		next: response => {
-	// 			console.log('Response from getSavedProducts', response);
-	// 			this.userProducts.userCustomProducts = response.userCustomProducts
-	// 		},
-	// 		error: error => {
-	// 			console.log('Error from getSavedProducts', error);
-	// 		}
-	// 	});
-	// }
-	openStaticBackdrop() {
-		this.offcanvasService.open(this.content, { backdrop: 'static', position: 'end' },);
-		this.renderer.addClass(this.elementRef.nativeElement.ownerDocument.body, 'no-scroll');
-	}
+	
 	//todo if we close with esc it doesn't do this function
 	//this is the dumb way to fix that issue... //todo find a better way
 	@HostListener('document:keydown.escape', ['$event'])
@@ -176,20 +171,11 @@ export class OffcanvasComponent {
 		//this.updateSelected()
 		this.offcanvasService.dismiss('Cross click')
 		this.renderer.removeClass(this.elementRef.nativeElement.ownerDocument.body, 'no-scroll');
+		
 		this.valueChanged.closed
 		this.closedMenu.emit();
 	}
-	//TODO make this efficient. this function called each time we exit the canvas		
-	// async updateSelected() {
-	// 	try {
-	// 		const response = await lastValueFrom(this.customOffcanvasService.
-	// 			updateCustomProducts(
-	// 				this.userStats));
-	// 		console.log("Handle successful response ", response);
-	// 	} catch (error: any) {
-	// 		console.log("we caught an error", error);
-	// 	}
-	// }
+
 	async editProduct(product: any) {
 		// Prompt the user to edit the product values
 		const newName = prompt("Enter a new name for the product:", product.name);
@@ -244,6 +230,7 @@ export class OffcanvasComponent {
 		}
 	}
 	async deleteProduct(product: any) {
+		const confirmation = confirm('Warning!!!\nif this item is selected in other dates its will not be deleted\nare you sure you want to proceeded?');
 		const index = this.userCustomFood[this.canvasNumber].indexOf(product);
 
 		//this.customOffcanvasService.deleteCustomProduct(product._id)

@@ -48,7 +48,7 @@
 		</form>
 		<div style="height: 300px; overflow-y: scroll;">
 			<ul *ngFor="let product of deletedSelectedFood this"> 
-				<li (click)="selectDeletedProduct(product)" [class.selected]="isSelected(product)">
+				<li (click)="selectDeletedProduct(product)" [class.selected]="true">
 				  <label>Name: {{product.name}}</label><br>
 				  <label>kcal_total: {{product.kcal_total}}</label><br>
 				  <label>carbs: {{product.carbs}}</label>

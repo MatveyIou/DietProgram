@@ -28,7 +28,6 @@ export class SelectorComponent{
   calorieDisplay:string[]=["Add BreakFast","Add Launch","Add Snack","Add Dinner"]
   calorieTotal:number[]=[0,0,0,0]
   docs: HTMLElement[] | undefined
-  customFoods!: ICustomFood[][];
 
   constructor(private activeRoute: ActivatedRoute,
     private selectorService: SelectorService,
@@ -63,10 +62,10 @@ export class SelectorComponent{
   }
 
   async openStaticBackdrop(canvasNumber: number) {
-    this.customFoods= await lastValueFrom(this.userCustomFoodResolver.resolve())
+    const customFoods= await lastValueFrom(this.userCustomFoodResolver.resolve())
     this.child!.canvasNumber = canvasNumber
-    this.child!.openStaticBackdrop()
-    this.child!.onView()
+    this.child!.openStaticBackdrop(customFoods)
+    
     
   }
   removeClass() {
