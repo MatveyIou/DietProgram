@@ -41,6 +41,7 @@ export class HeaderComponent {
   updateIndex(event:number){
     console.log("we have index number", event)
     this.indexDisplay=event
+    this.updatePassableData()
   }
   // ngDoCheck() {
   //   this.count+=1
@@ -54,10 +55,11 @@ export class HeaderComponent {
   //     });
     
   // }
-  public async getUpdatedData(indexNumber:number){
+  public async getUpdatedData(){
     const newData = await lastValueFrom(this.userStatsResolver.resolve())
     this.userData=newData
     console.log(newData,"LOL")
+    this.updatePassableData()
     
   }
   private async getUserName(): Promise<void> {
@@ -70,18 +72,18 @@ export class HeaderComponent {
     //this.userData.mainData[this.indexDisplay].carbs=100
   }
   updatePassableData() {
+    
     this.kcal_left= this.userData.mainData[this.indexDisplay].kcal_left
     this.kcal= this.userData.mainData[this.indexDisplay].kcal
     this.burned = this.userData.mainData[this.indexDisplay].burned
+    console.log("NEW CHENGES!!!",this.kcal_left,this.kcal,this.burned)
   }
 
   logoutAction() {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
-  //TODO scrollToDate(){ 
-  //   this.elementRef.scrollToTop();
-  // }
+
   htmlHeaderAnim() {
     var scrollCn = function (quantity: number) {
       var scrollTop = (window.pageYOffset || document.body.scrollTop) - (document.body.clientTop || 0);

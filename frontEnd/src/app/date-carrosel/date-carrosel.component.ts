@@ -43,11 +43,7 @@ export class DateCarroselComponent implements OnInit {
       this.userDatesCarousel.push(data.date)
     });
   }
-  onSlide(event: NgbSlideEvent) {
-    // Code to execute before the slide animation starts
-    console.log('Before slide animation:', event);
-    // Your code here
-  }
+ 
   async ngOnInit(): Promise<void> {
     this.addDateTemp();
     console.log("this.activeIndex",this.activeIndex)
@@ -128,7 +124,7 @@ export class DateCarroselComponent implements OnInit {
   }
   passEmitter(indexUpdate:number) {
     console.log("There is new Emitter")
-    this.eventEmitterIndex.emit(indexUpdate)
+    this.eventEmitterIndex.emit()
     //this.userData.mainData[indexUpdate].selectedFood=event
 
   }
