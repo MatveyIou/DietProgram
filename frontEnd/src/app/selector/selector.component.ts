@@ -66,6 +66,7 @@ export class SelectorComponent{
     this.customFoods= await lastValueFrom(this.userCustomFoodResolver.resolve())
     this.child!.canvasNumber = canvasNumber
     this.child!.openStaticBackdrop()
+    this.child!.onView()
     
   }
   removeClass() {

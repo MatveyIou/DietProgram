@@ -47,7 +47,18 @@
                         [disabled]="registrationForm.invalid">Save Product</button>
 		</form>
 		<div style="height: 300px; overflow-y: scroll;">
-			<ul *ngFor="let product of userCustomFood[this.canvasNumber]"> 
+			<ul *ngFor="let product of deletedSelectedFood this"> 
+				<li (click)="selectDeletedProduct(product)" [class.selected]="isSelected(product)">
+				  <label>Name: {{product.name}}</label><br>
+				  <label>kcal_total: {{product.kcal_total}}</label><br>
+				  <label>carbs: {{product.carbs}}</label>
+				  <label>protein: {{product.protein}}</label>
+				  <label>fat: {{product.fat}}</label>
+				  <label>id: {{product._id}}</label>
+				</li>
+
+			  </ul>
+			<ul *ngFor="let product of customFoodDisplay this"> 
 			  <li (click)="selectProduct(product)" [class.selected]="isSelected(product)">
 				<label>Name: {{product.name}}</label><br>
 				<label>kcal_total: {{product.kcal_total}}</label><br>
@@ -60,6 +71,7 @@
 				<button (click)="editProduct(product)">Edit</button>
 				<button (click)="deleteProduct(product)">Delete</button></div>
 			</ul>
+			
 		</div>
 	</div>
 </ng-template>

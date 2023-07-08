@@ -22,13 +22,16 @@ export class OffcanvasComponent {
 	// @Input() maybe redundant. we a calling the component itself in selector
 	//TODO Check references
 	@Input() canvasNumber!: number
-	@Input() selectedFoodToCheck!:ICustomFood[][]
+	@Input() selectedFoodToCheck!: ICustomFood[][]
 	//userStats!: userData
-	@Input() userCustomFood!:ICustomFood[][]
+	@Input() userCustomFood!: ICustomFood[][]
 	//userCustomFood:ICustomFood[][] = this.activeRoute.snapshot.data['Custom_Food'];
 	//currentDate:string="23-03-25"
-	@Output() valueChanged = new EventEmitter<{product:ICustomFood, canvasNumber:number}>();
+	@Output() valueChanged = new EventEmitter<{ product: ICustomFood, canvasNumber: number }>();
 	@Output() closedMenu = new EventEmitter<any>();
+
+	customFoodDisplay: ICustomFood[] | undefined
+	deletedSelectedFood: ICustomFood[] = []
 
 	name!: string;
 	kcal_total!: number;
@@ -37,7 +40,7 @@ export class OffcanvasComponent {
 	fat!: number;
 	registrationForm: FormGroup | any;
 	message: string = ""
-	errorMessage: string =""
+	errorMessage: string = ""
 
 	constructor(private formBuilder: FormBuilder,
 		private offcanvasService: NgbOffcanvas,
@@ -45,26 +48,65 @@ export class OffcanvasComponent {
 		private customOffcanvasService: OffcanvasService,
 		private elementRef: ElementRef,
 		private renderer: Renderer2,
-		private userCustomFoodResolver:UserCustomFoodResolver,
+		private userCustomFoodResolver: UserCustomFoodResolver,
 		private cdr: ChangeDetectorRef
 	) { }
 
 	async ngOnInit(): Promise<void> {
-		console.log("\x1b[41m"+"offcanvas","CUSTOM_FOOD", this.userCustomFood)
-		console.log("\x1b[41m"+"offcanvas","SELECTED_FOOD", this.selectedFoodToCheck)
-		
-			this.registrationForm = this.formBuilder.group({
+		//so this wont start "undefined"
+		this.userCustomFood = this.activeRoute.snapshot.data['Custom_Food']
+		this.customFoodDisplay = this.userCustomFood[this.canvasNumber]
+		this.storeDeletedSelected()
+		this.registrationForm = this.formBuilder.group({
 			name: ['', Validators.required],
 			kcal_total: ['', [Validators.required, Validators.pattern("^[0-9]+([.][0-9]{1,2})?$")]],
-  			carbs: ['', [Validators.required, Validators.pattern("^[0-9]+([.][0-9]{1,2})?$")]],
-  			protein: ['', [Validators.required, Validators.pattern("^[0-9]+([.][0-9]{1,2})?$")]],
-  			fat: ['', [Validators.required, Validators.pattern("^[0-9]+([.][0-9]{1,2})?$")]]
+			carbs: ['', [Validators.required, Validators.pattern("^[0-9]+([.][0-9]{1,2})?$")]],
+			protein: ['', [Validators.required, Validators.pattern("^[0-9]+([.][0-9]{1,2})?$")]],
+			fat: ['', [Validators.required, Validators.pattern("^[0-9]+([.][0-9]{1,2})?$")]]
 		})
+	}
+	onView() {
+		if(this.deletedSelectedFood.length===0)
+			this.storeDeletedSelected()
+		this.customFoodDisplay = this.userCustomFood[this.canvasNumber]
+		console.log("\x1b[45m" + "offcanvas onView()", "CUSTOM_FOOD", this.userCustomFood)
+		console.log("\x1b[45m" + "offcanvas onView()", "SELECTED_FOOD", this.selectedFoodToCheck)
+
+	}
+	//todo this is not efficient this is n^3
+	storeDeletedSelected() {
+		for (let i = 0; i < this.selectedFoodToCheck.length; i++) {
+			const selectedFoods = this.selectedFoodToCheck[i];
+			const userFoods = this.userCustomFood[i];
+
+			selectedFoods.forEach(food => {
+				let flagFound = false
+				for (let j = 0; j < userFoods.length; j++) {
+					if (userFoods[j]._id == food._id) {
+						flagFound = true;
+						break
+					}
+				}
+				if (!flagFound) {
+					this.deletedSelectedFood.push(food)
+				}
+			});
+		}
 	}
 
 	selectProduct(product: ICustomFood) {
 		//console.log("will try to emmit", {product:product,canvasNumber:this.canvasNumber})
-		this.valueChanged.emit({product:product,canvasNumber:this.canvasNumber})// this sends the reference!!
+		this.valueChanged.emit({ product: product, canvasNumber: this.canvasNumber })// this sends the reference!!
+	}
+	selectDeletedProduct(product: ICustomFood) {
+		const confirmation = confirm('This item is DELETED and will be permanent unselected');
+  if (confirmation) {
+    const index = this.deletedSelectedFood.findIndex(food => food._id === product._id);
+    if (index !== -1) {
+      this.deletedSelectedFood.splice(index, 1);
+    }
+  }
+  this.valueChanged.emit({ product: product, canvasNumber: this.canvasNumber })
 	}
 	isSelected(product: ICustomFood) {
 		const isContain = this.selectedFoodToCheck[this.canvasNumber].find(food => food._id === product._id)
@@ -75,8 +117,8 @@ export class OffcanvasComponent {
 	 * New CustomFood
 	 */
 	onSubmit() {
-		this.message=""
-		this.errorMessage=""
+		this.message = ""
+		this.errorMessage = ""
 		const newUserFood: ICustomFood = {
 			name: this.registrationForm.get('name').value,
 			kcal_total: this.registrationForm.get('kcal_total').value,
@@ -90,22 +132,23 @@ export class OffcanvasComponent {
 	async registerProduct(newProduct: ICustomFood) {
 
 		try {
-			const response = await lastValueFrom(this.customOffcanvasService.pushCustomProducts(newProduct,this.canvasNumber));
-			console.log("before registerProduct",this.userCustomFood)
+			const response = await lastValueFrom(this.customOffcanvasService.pushCustomProducts(newProduct, this.canvasNumber));
+			console.log("before registerProduct", this.userCustomFood)
 			console.log("Handle successful response ", response);
 			//this.userStats=response.userCustomProductsSchema
 			this.registrationForm.reset();
-			this.userCustomFood=response.customFood
+			this.userCustomFood = response.customFood
+			this.customFoodDisplay = this.userCustomFood[this.canvasNumber]
 			//wow it works
 			this.cdr.detectChanges();
-			console.log("New Custom Products: ",this.userCustomFood)
+			console.log("New Custom Products: ", this.userCustomFood)
 			//TODO is this the correct way?
 
 
-			this.message="We've saved the product"
+			this.message = "We've saved the product"
 		} catch (error: any) {
 			console.log("we caught an error", error);
-			this.errorMessage="Theres an error"
+			this.errorMessage = "Theres an error"
 		}
 	}
 	// async getProducts(): Promise<void> {
@@ -127,7 +170,7 @@ export class OffcanvasComponent {
 	//this is the dumb way to fix that issue... //todo find a better way
 	@HostListener('document:keydown.escape', ['$event'])
 	onKeyDown(event: KeyboardEvent) {
-  	this.closeCanvas();
+		this.closeCanvas();
 	}
 	closeCanvas() {
 		//this.updateSelected()
@@ -179,37 +222,38 @@ export class OffcanvasComponent {
 		else
 			alert("Invalid input please try again with valid values.");
 	}
-	async updateCustomProducts(editProduct: ICustomFood){
+	async updateCustomProducts(editProduct: ICustomFood) {
 		try {
 			const response = await lastValueFrom(this.customOffcanvasService.setEditCustomFood(editProduct));
-			console.log("before registerProduct",this.userCustomFood)
+			console.log("before registerProduct", this.userCustomFood)
 			console.log("Handle successful response ", response);
 			//this.userStats=response.userCustomProductsSchema
 			this.registrationForm.reset();
 			//TODO is this the correct way?
 			//wow it works
 			this.cdr.detectChanges();
-			console.log("New Custom Products: ",this.userCustomFood)
-			
+			console.log("New Custom Products: ", this.userCustomFood)
+
 			//will need to update it so the selector see the correct values
 			//one way of do it by reelecting it
 			this.selectProduct(editProduct)
 			this.selectProduct(editProduct)
 		} catch (error: any) {
 			console.log("we caught an error", error);
-			this.message="Theres an error",error
+			this.message = "Theres an error", error
 		}
 	}
 	async deleteProduct(product: any) {
 		const index = this.userCustomFood[this.canvasNumber].indexOf(product);
-		
+
 		//this.customOffcanvasService.deleteCustomProduct(product._id)
 		try {
 			const response = await lastValueFrom(this.customOffcanvasService.deleteCustomProduct(product));
 			console.log("Handle successful response ", response);
 			this.userCustomFood[this.canvasNumber].splice(index, 1);
+			this.customFoodDisplay = this.userCustomFood[this.canvasNumber]
 			// if product selected then selected it
-			if(this.isSelected(product))
+			if (this.isSelected(product))
 				this.selectProduct(product)
 			//TODO this.valueChanged.emit(this.userStats)
 		} catch (error: any) {
