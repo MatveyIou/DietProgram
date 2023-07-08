@@ -7,6 +7,7 @@ import { OffcanvasService } from './offcanvas.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ICustomFood, userData } from 'src/models/user-data.model';
+import { UserCustomFoodResolver } from 'src/resolvers/user-custom-food.resolver';
 
 
 @Component({
@@ -23,7 +24,8 @@ export class OffcanvasComponent {
 	@Input() canvasNumber!: number
 	@Input() selectedFoodToCheck!:ICustomFood[][]
 	//userStats!: userData
-	userCustomFood:ICustomFood[][] = this.activeRoute.snapshot.data['Custom_Food'];
+	@Input() userCustomFood!:ICustomFood[][]
+	//userCustomFood:ICustomFood[][] = this.activeRoute.snapshot.data['Custom_Food'];
 	//currentDate:string="23-03-25"
 	@Output() valueChanged = new EventEmitter<{product:ICustomFood, canvasNumber:number}>();
 	@Output() closedMenu = new EventEmitter<any>();
@@ -43,12 +45,11 @@ export class OffcanvasComponent {
 		private customOffcanvasService: OffcanvasService,
 		private elementRef: ElementRef,
 		private renderer: Renderer2,
-
+		private userCustomFoodResolver:UserCustomFoodResolver,
 		private cdr: ChangeDetectorRef
 	) { }
 
 	async ngOnInit(): Promise<void> {
-		this.userCustomFood //TODO maybe object can cause problems
 		console.log("\x1b[41m"+"offcanvas","CUSTOM_FOOD", this.userCustomFood)
 		console.log("\x1b[41m"+"offcanvas","SELECTED_FOOD", this.selectedFoodToCheck)
 		
@@ -99,6 +100,8 @@ export class OffcanvasComponent {
 			this.cdr.detectChanges();
 			console.log("New Custom Products: ",this.userCustomFood)
 			//TODO is this the correct way?
+
+
 			this.message="We've saved the product"
 		} catch (error: any) {
 			console.log("we caught an error", error);

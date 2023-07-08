@@ -6,6 +6,7 @@ import { ICustomFood, IUserPreset, userData } from 'src/models/user-data.model';
 
 import { Subscription, lastValueFrom } from 'rxjs';
 import { SelectorService } from './selector.service';
+import { UserCustomFoodResolver } from 'src/resolvers/user-custom-food.resolver';
 
 
 
@@ -27,10 +28,12 @@ export class SelectorComponent{
   calorieDisplay:string[]=["Add BreakFast","Add Launch","Add Snack","Add Dinner"]
   calorieTotal:number[]=[0,0,0,0]
   docs: HTMLElement[] | undefined
+  customFoods!: ICustomFood[][];
 
   constructor(private activeRoute: ActivatedRoute,
     private selectorService: SelectorService,
     private cdr: ChangeDetectorRef,
+    private userCustomFoodResolver:UserCustomFoodResolver
     ){
       
     }
@@ -60,9 +63,10 @@ export class SelectorComponent{
   }
 
   async openStaticBackdrop(canvasNumber: number) {
+    this.customFoods= await lastValueFrom(this.userCustomFoodResolver.resolve())
     this.child!.canvasNumber = canvasNumber
     this.child!.openStaticBackdrop()
-    console.log("this function is called at selector. ", this.child)
+    
   }
   removeClass() {
     this.docs!.forEach(element => {
