@@ -2,7 +2,7 @@
 [canvasNumber]="this.canvasNumber"
 [selectedFoodToCheck]="this.selectedFood"
 (valueChanged)="this.newFoodPicked($event)"
-(closedMenu)="this.updateMainData($event)"></app-offcanvas>
+(closedMenu)="this.updateMainData()"></app-offcanvas>
 
 
 <ng-container class="img-thumbnail" *ngFor="let meal of ['Breakfast', 'Launch', 'Snack', 'Dinner']; let i = index">

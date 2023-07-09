@@ -14,7 +14,7 @@ export class ProgressbarComponent {
   total_kcal_left: number | undefined;
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes)
+    //console.log(changes)
     if (changes['kcal'] || changes['burned']) {
       this.calcSum();
     }

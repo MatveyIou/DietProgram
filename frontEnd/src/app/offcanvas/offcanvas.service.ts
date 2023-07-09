@@ -26,9 +26,10 @@ export class OffcanvasService {
     );
   }
   pushCustomProducts(newProduct:ICustomFood,indexType:number): Observable<any>{
-    console.log("Trying to push product")
-    return this.authService.pushCustomProduct(newProduct,indexType)
-    .pipe(
+    return this.authService.pushCustomProduct(newProduct,indexType).pipe(
+      tap((response) => {
+        console.log("\x1b[32m"+'Successful response','pushCustomProducts()', response);
+      }),
       catchError(error => {
         console.log('Error registering product:', error.message);
         return throwError(() => error);
@@ -37,18 +38,22 @@ export class OffcanvasService {
   }
 
   deleteCustomProduct(deleteProduct:ICustomFood): Observable<any>{
-    console.log("trying to delete")
   return this.authService.deleteCustomProduct(deleteProduct).pipe(
+    tap((response) => {
+      console.log("\x1b[32m"+'Successful response','deleteCustomProduct()', response);
+    }),
     catchError(error => {
       console.log('Error deleting product:', error.message);
       return throwError(() => error);
     })
   );
 }
-setEditCustomFood(editProduct:ICustomFood):Observable<ICustomFood>{
-  console.log("trying to edit a single product")
+updateCustomFood(editProduct:ICustomFood):Observable<ICustomFood>{
   return this.authService.updateCustomFood(editProduct)
     .pipe(
+      tap((response) => {
+        console.log("\x1b[32m"+'Successful response','updateCustomFood()', response);
+      }),
       catchError(error => {
         console.log('Error registering product:', error.message);
         return throwError(() => error);

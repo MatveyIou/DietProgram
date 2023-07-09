@@ -1,7 +1,5 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { OffcanvasComponent } from '../offcanvas/offcanvas.component';
-
-import { ActivatedRoute } from '@angular/router';
 import { ICustomFood, IUserPreset, userData } from 'src/models/user-data.model';
 
 import { Subscription, lastValueFrom } from 'rxjs';
@@ -18,7 +16,7 @@ import { UserCustomFoodResolver } from 'src/resolvers/user-custom-food.resolver'
 export class SelectorComponent{
   @ViewChild(OffcanvasComponent) child: OffcanvasComponent | undefined
 
-  @Output() valuePicked!: Subscription
+
   @Output() eventEmitterForHeader = new EventEmitter<any>();
 
   @Input() currentDateData!:IUserPreset
@@ -29,17 +27,11 @@ export class SelectorComponent{
   calorieTotal:number[]=[0,0,0,0]
   docs: HTMLElement[] | undefined
 
-  constructor(private activeRoute: ActivatedRoute,
+  constructor(
     private selectorService: SelectorService,
     private cdr: ChangeDetectorRef,
     private userCustomFoodResolver:UserCustomFoodResolver
     ){
-      
-    }
-    makeChanges() {
-      // Make your changes here
-      
-      // Trigger change detection in the header component
       
     }
   async fetchSelectedFood(){
@@ -80,7 +72,8 @@ export class SelectorComponent{
   }
 
     newFoodPicked(event : { product: ICustomFood, canvasNumber: number }){
-      console.log("emitted event ", event);
+      
+      console.log("gotten emitted event for product", event);
     
       // Check if the product already exists in the selectedFood array
       const index = this.selectedFood[event.canvasNumber]
@@ -93,7 +86,7 @@ export class SelectorComponent{
         // if not
         this.selectedFood[event.canvasNumber].push(event.product);
     
-      console.log(this.selectedFood);
+      console.log("This is our new selected foods:",this.selectedFood);
     }
     toggleSelected(product:ICustomFood,indexType:number):void{
 
@@ -101,26 +94,19 @@ export class SelectorComponent{
     }
 
     //todo re check this
-    async updateMainData(event:any){
+    async updateMainData(){
       try {
         const response = await lastValueFrom(this.selectorService.updateSelectedFood(this.currentDateData.date,this.selectedFood));
-        console.log("Handle successful to update selected food", response);
         this.selectedFood=response
         this.cdr.detectChanges();
-        //this.headerComponent.cdr.detectChanges();
         this.updateSumCalories();
         //todo this is a quick way of sending data to the header
+        console.log("\x1b[46m"+"eventEmitterForHeader.emit()","Emitter To Update the header. from selector")
         this.eventEmitterForHeader.emit()
-        //this.passSelectedFoodEvent();
       } catch (error : any) {
-        console.log("we caught an error", error);
+        console.log("we caught an error in updateMainData()", error);
         }
-      
     }
-    // passSelectedFoodEvent(){
-    //   console.log("EVEN EMMITER: ",this.selectedFood)
-    //   this.valueSelectedFoodPass.emit(this.selectedFood)
-    // }
 
     updateSumCalories(){
       var sumNumbers=0
@@ -132,6 +118,7 @@ export class SelectorComponent{
         this.calorieTotal[i]=sumNumbers
         sumNumbers=0
       }
+      console.log("this is the Sums of kcal_total's :", this.calorieTotal)
     }
   }
   

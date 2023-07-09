@@ -27,10 +27,10 @@ export class SelectorService {
     );
   }
   updateSelectedFood(date:string,selectedFood: ICustomFood[][]):Observable<ICustomFood[][]>{
-    console.log("Trying to get Selected Product",date)
+    console.log("Trying to get updated Selected Product for",date)
     return this.authService.updateSelectedFoodData("/home/selectedproducts/put",date,selectedFood).pipe(
       tap((response) => {
-        console.log("\x1b[32m"+'Successful response'+'updateSelectedFood()', response);
+        console.log("\x1b[32m"+'Successful response','updateSelectedFood()', response);
       }),
       catchError((error) => {
         console.log('we caught an error updateSelectedFood()', error);

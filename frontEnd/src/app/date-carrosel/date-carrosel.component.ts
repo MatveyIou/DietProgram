@@ -19,7 +19,7 @@ export class DateCarroselComponent implements OnInit {
   userDatesCarousel: string[] = []
 
   @Output() eventIndexChanged = new EventEmitter<number>();
-  @Output() eventEmitterIndex = new EventEmitter<number>();
+  @Output() eventUpdateEmitter = new EventEmitter<any>();
   posIni: any;
   activeIndex: number = 0
 
@@ -43,7 +43,6 @@ export class DateCarroselComponent implements OnInit {
  
   async ngOnInit(): Promise<void> {
     this.addDateTemp();
-    console.log("this.activeIndex",this.activeIndex)
     console.log("\x1b[41m" + "date-carrosel init","this.userDatesCarousel", this.userDatesCarousel)
   }
   ngOnDestroy(): void {
@@ -79,6 +78,7 @@ export class DateCarroselComponent implements OnInit {
       this.addDateTemp()
       this.count++;
     }
+    console.log("\x1b[46m"+"eventIndexChanged.emit","Emitter To Update the display index header from. date-carrosel")
     this.eventIndexChanged.emit(this.activeIndex)
   }
   async nextClick() {
@@ -119,9 +119,9 @@ export class DateCarroselComponent implements OnInit {
 
     if (offset > 100) this.carousel!.next();
   }
-  passEmitter(indexUpdate:number) {
-    console.log("There is new Emitter")
-    this.eventEmitterIndex.emit()
+  passUpdateEmitter() {
+    console.log("\x1b[46m"+"eventUpdateEmitter.emit()","Emitter To Update the header from. date-carrosel")
+    this.eventUpdateEmitter.emit()
     //this.userData.mainData[indexUpdate].selectedFood=event
 
   }

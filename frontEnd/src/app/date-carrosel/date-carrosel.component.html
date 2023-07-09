@@ -24,7 +24,7 @@
       <ng-container *ngIf="!last">
         <app-selector
           [currentDateData]="currentDateData[i]"
-          (eventEmitterForHeader)="passEmitter(i)">
+          (eventEmitterForHeader)="passUpdateEmitter()">
         </app-selector>
       </ng-container>
     </ng-template>

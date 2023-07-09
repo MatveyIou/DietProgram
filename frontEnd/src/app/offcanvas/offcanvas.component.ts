@@ -104,8 +104,9 @@ export class OffcanvasComponent {
 	}
 
 	selectProduct(product: ICustomFood) {
-		//console.log("will try to emmit", {product:product,canvasNumber:this.canvasNumber})
-		this.valueChanged.emit({ product: product, canvasNumber: this.canvasNumber })// this sends the reference!!
+		// this sends the reference!!
+		console.log("\x1b[46m"+"valueChanged.emit","Emitter To selector to update the Selected products. from offcanvas")
+		this.valueChanged.emit({ product: product, canvasNumber: this.canvasNumber })
 	}
 	selectDeletedProduct(product: ICustomFood) {
 		const confirmation = confirm('This item is DELETED and will be permanent unselected');
@@ -115,6 +116,7 @@ export class OffcanvasComponent {
       this.deletedSelectedFood.splice(index, 1);
     }
   }
+  console.log("\x1b[46m"+"valueChanged.emit","Emitter To selector to update the Deleted Selected products. from offcanvas")
   this.valueChanged.emit({ product: product, canvasNumber: this.canvasNumber })
 	}
 	isSelected(product: ICustomFood) {
@@ -142,9 +144,6 @@ export class OffcanvasComponent {
 
 		try {
 			const response = await lastValueFrom(this.customOffcanvasService.pushCustomProducts(newProduct, this.canvasNumber));
-			console.log("before registerProduct", this.userCustomFood)
-			console.log("Handle successful response ", response);
-			//this.userStats=response.userCustomProductsSchema
 			this.registrationForm.reset();
 			this.userCustomFood = response.customFood
 			this.customFoodDisplay = this.userCustomFood[this.canvasNumber]
@@ -173,6 +172,7 @@ export class OffcanvasComponent {
 		this.renderer.removeClass(this.elementRef.nativeElement.ownerDocument.body, 'no-scroll');
 		
 		this.valueChanged.closed
+		console.log("\x1b[46m"+"closedMenu.emit","Emitter To selector to close the offcanvas. from offcanvas")
 		this.closedMenu.emit();
 	}
 
@@ -210,42 +210,37 @@ export class OffcanvasComponent {
 	}
 	async updateCustomProducts(editProduct: ICustomFood) {
 		try {
-			const response = await lastValueFrom(this.customOffcanvasService.setEditCustomFood(editProduct));
-			console.log("before registerProduct", this.userCustomFood)
-			console.log("Handle successful response ", response);
-			//this.userStats=response.userCustomProductsSchema
+			await lastValueFrom(this.customOffcanvasService.updateCustomFood(editProduct));
 			this.registrationForm.reset();
-			//TODO is this the correct way?
-			//wow it works
 			this.cdr.detectChanges();
 			console.log("New Custom Products: ", this.userCustomFood)
-
 			//will need to update it so the selector see the correct values
-			//one way of do it by reelecting it
+			//one way of do it by re selecting it
 			this.selectProduct(editProduct)
-			this.selectProduct(editProduct)
+
 		} catch (error: any) {
-			console.log("we caught an error", error);
-			this.message = "Theres an error", error
+			console.log("we caught an error Updating the product", error);
+			this.message = "Theres an error Updating the product", error
 		}
 	}
 	async deleteProduct(product: any) {
 		const confirmation = confirm('Warning!!!\nif this item is selected in other dates its will not be deleted\nare you sure you want to proceeded?');
-		const index = this.userCustomFood[this.canvasNumber].indexOf(product);
-
-		//this.customOffcanvasService.deleteCustomProduct(product._id)
+		if(confirmation){
+		const indexOfProduct = this.userCustomFood[this.canvasNumber].indexOf(product);
 		try {
-			const response = await lastValueFrom(this.customOffcanvasService.deleteCustomProduct(product));
-			console.log("Handle successful response ", response);
-			this.userCustomFood[this.canvasNumber].splice(index, 1);
+			await lastValueFrom(this.customOffcanvasService.deleteCustomProduct(product));
+
+			this.userCustomFood[this.canvasNumber].splice(indexOfProduct, 1);
 			this.customFoodDisplay = this.userCustomFood[this.canvasNumber]
-			// if product selected then selected it
+			// if product selected then selected it(to remove the selected status)
 			if (this.isSelected(product))
 				this.selectProduct(product)
-			//TODO this.valueChanged.emit(this.userStats)
+
 		} catch (error: any) {
-			console.log("we caught an error", error);
+			console.log("we caught an error Deleting the product", error);
+			this.message = "Theres an error Deleting the product", error
 		}
+	}
 	}
 
 }

@@ -1,11 +1,10 @@
 import { ChangeDetectorRef, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { AuthService } from '../../auth/auth.service'
 import { Router, ActivatedRoute } from '@angular/router';
-import { ICustomFood, IUserPreset, userData } from '../../models/user-data.model';
-import { ContentComponent } from '../content/content.component';
+
 import { HeaderService } from './header.service';
-import { Subscription, lastValueFrom } from 'rxjs';
-import { HomeService } from '../home/home.service';
+import { lastValueFrom } from 'rxjs';
+
 import { UserStatsResolver } from 'src/resolvers/user-stats.resolver';
 
 
@@ -34,31 +33,17 @@ export class HeaderComponent {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private headerService: HeaderService,
-    private cdr: ChangeDetectorRef,
     private userStatsResolver:UserStatsResolver
   ) {
   }
   updateIndex(event:number){
-    console.log("we have index number", event)
+    console.log("\x1b[41m"+"Header updateIndex()","Showing index:", event)
     this.indexDisplay=event
     this.updatePassableData()
   }
-  // ngDoCheck() {
-  //   this.count+=1
-  //   if (this.changeSubscription) {
-  //     this.changeSubscription.unsubscribe();
-  //   }
-  //   //TODO find another way of getting data from selector this function runs alot of times
-
-  //   this.changeSubscription = this.sharedService.dataObservable.subscribe(data => {
-  //       console.log("changes made for the HEADER",this.count);
-  //     });
-    
-  // }
   public async getUpdatedData(){
     const newData = await lastValueFrom(this.userStatsResolver.resolve())
     this.userData=newData
-    console.log(newData,"LOL")
     this.updatePassableData()
     
   }
@@ -69,14 +54,12 @@ export class HeaderComponent {
     await this.getUserName();
     this.updatePassableData();
     this.htmlHeaderAnim()
-    //this.userData.mainData[this.indexDisplay].carbs=100
   }
   updatePassableData() {
     
     this.kcal_left= this.userData.mainData[this.indexDisplay].kcal_left
     this.kcal= this.userData.mainData[this.indexDisplay].kcal
     this.burned = this.userData.mainData[this.indexDisplay].burned
-    console.log("NEW CHENGES!!!",this.kcal_left,this.kcal,this.burned)
   }
 
   logoutAction() {
