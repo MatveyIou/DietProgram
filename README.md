@@ -10,16 +10,16 @@ A Login and Registration Functionality.
 * Uses JWT to save users Login sessions. Users will be able to automatically Login when the session is not expired.
 * Saves the Registration for each users in the Database.
 * Check the validity of the users against the Database.
-* With Registrations. The users can set thier calorie intake "plan".
+* With Registrations. The users can set their calorie intake "plan".
 ## Date Tracker
-Users can scroll through his Dates to see thier calorie intake.
-* A Date builder. the users will be able to set thier calorie intake when passing into a new Date.
-* Dates are being saved in the database with thier selected calorie(product) intake.
-* Users are set on thier current Date(computer Date) on Login. and any Date they had saved before hand, they will be able to see the past Dates.
+Users can scroll through his Dates to see their calorie intake.
+* A Date builder. the users will be able to set their calorie intake when passing into a new Date.
+* Dates are being saved in the database with their selected calorie(product) intake.
+* Users are set on their current Date(computer Date) on Login. and any Date they had saved before hand, they will be able to see the past Dates.
 ## Product Selection and CRUD Functionality.
 * Users will be able to select a product through 4 categories. it will be saved in the Database when they select them for each Date.
 * ~~Users can create new products to each category.~~
-* CRUD functionality is enabled for the users to thier products.
+* CRUD functionality is enabled for the users to their products.
 
 # How to run the project
 We'll have to run the FrontEnd and BackEnd. <br>
