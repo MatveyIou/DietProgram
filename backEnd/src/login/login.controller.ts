@@ -125,6 +125,21 @@ export class LoginController {
     return res
    }
    @UseGuards(JwtAuthGuard)
+   @Put('home/burned/put')
+   async updateBurnedCalorieData(@Headers('User_ID') userID:string,@Request() req,@Query('index') indexMainData:number) {
+    const burned=req.body.burned
+    console.log(this.messagePUT,"\ntrying to update Burned Calorie for:", (await this.userService.findOneUser(userID)).email)
+    const userData= (await this.userService.findOneUserData(userID))
+    userData.mainData[indexMainData].burned=burned;
+    const res=  await userData.save();
+    if(!res)
+      console.log("not found res")
+    else
+      console.log("found update selected products res", res)
+    return res
+   }
+
+   @UseGuards(JwtAuthGuard)
    @Put('home/selectedproducts/put')
    async updateUserStats(@Headers('User_ID') userID:string,@Headers('customdate') date:string,@Request() req ) {
     console.log(this.messagePUT,"\ntrying to update selected products for:", (await this.userService.findOneUser(userID)).email)
@@ -201,8 +216,7 @@ export class LoginController {
     return res
    }
    
-  //  @UseGuards(JwtAuthGuard)
-  //  @Put('home/')
+
 
    @UseGuards(JwtAuthGuard)
    @Delete('home/product/delete/:id')
@@ -216,6 +230,7 @@ export class LoginController {
       console.log("res for push")
     return res
    }
+   @UseGuards(JwtAuthGuard)
    @Put('home/product/put')
    async pushCustomProduct(@Headers('User_ID') userID:string,@Request() req,@Query('index') indexType:number) {
     console.log(this.messagePUT,"\ntrying to push 1 customProduct for:", (await this.userService.findOneUser(userID)).email)

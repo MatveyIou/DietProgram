@@ -36,11 +36,23 @@
         </app-progressbar>
       </div>
       <div class="col">
-        <p>{{userData.mainData[indexDisplay].burned}}</p>
+        <p>{{this.burned? this.burned : this.userData.mainData[indexDisplay].burned}}</p>
         <p class="h6">BURNED</p>
+        <div class="container">
+          <div class="row button-container  d-flex align-items-center">
+            <div class="col">
+              <button class="text-nowrap add-button" (click)="addBurnedCalories()">Add Calories</button>
+            </div>
+            <div class="col">
+              <button class="text-nowrap remove-button" (click)="removeBurnedCalories()">Remove Calories</button>
+            </div>
+          </div>
+        </div>
       </div>
+      
+      
     </div>
-    <div class="row m-0">
+    <div class="row m-0 ">
       <div class="col">
         <p class="h6">CARBS</p>
         <div>----</div>

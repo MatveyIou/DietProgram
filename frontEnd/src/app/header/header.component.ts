@@ -36,6 +36,36 @@ export class HeaderComponent {
     private userStatsResolver:UserStatsResolver
   ) {
   }
+  addBurnedCalories() {
+    const input = prompt('Enter the number of calories to ADD:');
+    if(input){
+      const calories = parseInt(input);
+      
+      if (!isNaN(calories)) {
+        // Display the entered calories to the user using an alert
+        alert('Entered calories: ' + calories);
+        this.burned!+=calories
+        this.saveBurned()
+        // You can update your data or perform any desired actions with the entered value
+      } else {
+        alert('Invalid input!');
+      }
+    }
+      
+  }
+  removeBurnedCalories(){
+    const input = prompt('Enter the number of calories to REMOVE:');
+
+    if(input){
+      const calories = parseInt(input);
+      alert('Entered calories: ' + calories);
+      this.burned!-=calories;
+      this.saveBurned()
+    }
+  }
+  async saveBurned(){
+    await lastValueFrom(this.headerService.updateUserBurned(this.burned!,this.indexDisplay))
+  }
   updateIndex(event:number){
     console.log("\x1b[41m"+"Header updateIndex()","Showing index:", event)
     this.indexDisplay=event

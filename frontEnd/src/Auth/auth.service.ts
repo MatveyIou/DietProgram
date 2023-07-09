@@ -90,6 +90,7 @@ export class AuthService {
     IsAuthenticatedSubscription.unsubscribe()
   }
 
+  
   getData(route: string): Observable<any> {// TODO BACK END PRODUCTS
     const headers = new HttpHeaders({
       Authorization: "Bearer " + this.getToken(),
@@ -106,12 +107,21 @@ export class AuthService {
   
     return this.http.get(this.baseUrl + route, {headers});
   }
+  updateBurnedCalorieData(burned:number,indexMainData:number):Observable<any>{
+    const headers = new HttpHeaders({
+      Authorization: "Bearer " + this.getToken(),
+      User_ID:this.getSessionKeyUserStatsID()!,
+    });
+
+    return this.http.put(this.baseUrl + "/home/burned/put?index="+indexMainData,{burned}, {headers});
+  }
   updateSelectedFoodData(route: string,date:string,selectedFood:ICustomFood[][]): Observable<any> {// TODO BACK END PRODUCTS
     const headers = new HttpHeaders({
       Authorization: "Bearer " + this.getToken(),
       User_ID:this.getSessionKeyUserStatsID()!,
       customdate:date!
     });
+
     return this.http.put(this.baseUrl + route,selectedFood, {headers});
   }
   updateNextNewData(): Observable<IUserPreset>{
