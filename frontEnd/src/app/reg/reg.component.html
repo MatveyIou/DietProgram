@@ -1,1 +1,36 @@
-<p>reg works!</p>
+<div id="content" class="d-flex justify-content-center align-items-center" >
+    <div class="m-5">
+      <div class="page-content page-container" id="page-content">
+        <div class="padding">
+          <div class="row" >
+            <div class="col">
+              <div class="card bg-dark" [@cardAnimation]>
+                <div class="card-header text-light bg-dark"><strong>Registration</strong></div>
+                <div class="card-body">
+                  <div class="text-center">
+                    <div *ngIf="!showDateInput">
+                        <h4> Click here start to</h4>
+                      <button class="lose-weight-btn" (click)="showDateInput = true" (mousemove)="updateGradient($event)">Lose Weight</button>
+                    </div>
+                    <div *ngIf="showDateInput"  [@fadeInAnimation]>
+                      <h4 class="mb-4">Enter your date:</h4>
+                      <input class="form-control w-auto mx-auto" type="date" [(ngModel)]="selectedDate">
+                      <button class="btn btn-primary mt-4" (click)="checkAge()" (mousemove)="updateGradient($event)">Submit</button>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+    </div>
+    
+  </div>
+  <div *ngIf="showResult" class="text-center">
+    <h4 [class.text-success]="isSuccess" [class.text-danger]="!isSuccess">{{ result }}</h4>
+  </div>
+  

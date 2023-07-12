@@ -36,6 +36,23 @@ button{
   height: 0px;
 
 }
+.pretty-btn {
+  padding: 10px 20px;
+
+  background-color: #271d5a;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-size: 200% 200%;
+  background-position: center;
+
+  &:hover {
+    background-color: #271d5a;
+    background-image: linear-gradient(to left, #a761d4 0%, #8c54e8 50%, #4f3cac 100%);
+  }
+}
 
 
 nav {

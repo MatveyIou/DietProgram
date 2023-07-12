@@ -26,6 +26,6 @@ export class StartComponent implements OnInit, OnDestroy{
     this.router.navigate(['/login']);
   }
   goToSighUp(){
-    this.router.navigate(['/login/reg-final']);
+    this.router.navigate(['/login/reg']);
   }
 }

@@ -120,6 +120,15 @@ export class HeaderComponent {
     };
     window.addEventListener('scroll', function () { scrollCn(12.5) });
   }
-
+  updateGradient(event: MouseEvent) {
+    const button = event.target as HTMLElement;
+    const rect = button.getBoundingClientRect();
+    const posX = event.clientX - rect.left;
+    const posY = event.clientY - rect.top;
+    const percentX = (posX / rect.width) * 100;
+    const percentY = (posY / rect.height) * 100;
+  
+    button.style.backgroundPosition = `${percentX}% ${percentY}%`;
+  }
 
 }

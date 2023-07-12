@@ -123,7 +123,7 @@ export class LoginComponent implements OnInit, OnDestroy {
    * Go to the registration screen and start the registration  
    */
   registrationAction() {
-    const route = 'login/reg-final'
+    const route = 'login/reg'
     this.router.navigate([route])
     console.log("navigating to " + route)
   }
