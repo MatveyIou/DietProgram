@@ -49,12 +49,12 @@
 		<div style="height: 300px; overflow-y: scroll;">
 			<ul *ngFor="let product of deletedSelectedFood this"> 
 				<li (click)="selectDeletedProduct(product)" [class.selected]="true">
-				  <label>Name: {{product.name}}</label><br>
-				  <label>kcal_total: {{product.kcal_total}}</label><br>
-				  <label>carbs: {{product.carbs}}</label>
-				  <label>protein: {{product.protein}}</label>
-				  <label>fat: {{product.fat}}</label>
-				  <label>id: {{product._id}}</label>
+				  <label>Name: {{product.name}} </label><br>
+				  <label>kcal_total: {{product.kcal_total}} </label><br>
+				  <label>carbs: {{product.carbs}}&nbsp;</label>
+				  <label>protein: {{product.protein}}&nbsp;</label>
+				  <label>fat: {{product.fat}}&nbsp;</label><br>
+				  <label>id: {{product._id}}&nbsp;</label>
 				</li>
 
 			  </ul>
@@ -62,10 +62,10 @@
 			  <li (click)="selectProduct(product)" [class.selected]="isSelected(product)">
 				<label>Name: {{product.name}}</label><br>
 				<label>kcal_total: {{product.kcal_total}}</label><br>
-				<label>carbs: {{product.carbs}}</label>
-				<label>protein: {{product.protein}}</label>
-				<label>fat: {{product.fat}}</label>
-				<label>id: {{product._id}}</label>
+				<label>carbs: {{product.carbs}}&nbsp;</label>
+				<label>protein: {{product.protein}}&nbsp;</label>
+				<label>fat: {{product.fat}}&nbsp;</label><br>
+				<label>id: {{product._id}}&nbsp;</label>
 			  </li>
 			  <div class="d-flex justify-content-end me-5">
 				<button (click)="editProduct(product)">Edit</button>
@@ -75,25 +75,3 @@
 		</div>
 	</div>
 </ng-template>
-
-
-
-
-<!-- <button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openEnd()">Right position</button> -->
-<!-- <button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openTop(content)">Top position</button>
-<button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openBottom(content)">Bottom position</button>
-<button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openNoBackdrop(content)">No backdrop</button>
-<button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openStaticBackdrop(content)">Static backdrop</button>
-<button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openScroll(content)">
-	Scrolling of main content enabled
-</button>
-<button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openNoKeyboard(content)">
-	Escape does not dismiss
-</button>
-<button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openNoAnimation(content)">No animation</button>
-<button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openCustomBackdropClass(content)">
-	Custom backdrop class
-</button>
-<button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openCustomPanelClass(content)">
-	Custom panel class
-</button> -->

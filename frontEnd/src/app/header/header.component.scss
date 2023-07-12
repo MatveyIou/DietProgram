@@ -85,26 +85,26 @@ nav {
 
 #nav-bg 
 {
-  background: #2489c4;
+  background: #4f3cac;
   position: fixed;
   height: 5em;
   width: 100%;
   top: 0;
   z-index: 1;
   padding-bottom: 150px;
-  border-bottom-left-radius: 500px ;
-  border-bottom-right-radius: 500px ;
+  border-bottom-left-radius: 1000px ;
+  border-bottom-right-radius: 1000px ;
 }
 
 
 header {
   position: relative;
-  background-color: #2489c4;
+  background-color: #4f3cac;
   //min-width: 720px;
   padding: 5em 0 1em;
   z-index: 2;
-  border-bottom-left-radius: 125px ;
-  border-bottom-right-radius: 125px ;
+  border-bottom-left-radius: 325px ;
+  border-bottom-right-radius: 325px ;
 
   h1 {
     font-size: 4em;
