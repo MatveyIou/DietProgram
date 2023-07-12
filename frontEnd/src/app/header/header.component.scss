@@ -34,6 +34,8 @@ button{
 }
 .button-container{
   height: 0px;
+  margin-bottom: 10px;
+  
 
 }
 .pretty-btn {
@@ -108,9 +110,9 @@ nav {
   width: 100%;
   top: 0;
   z-index: 1;
-  padding-bottom: 150px;
-  border-bottom-left-radius: 1000px ;
-  border-bottom-right-radius: 1000px ;
+  padding-bottom: 170px;
+  border-bottom-left-radius: 500px ;
+  border-bottom-right-radius: 500px ;
 }
 
 
@@ -194,4 +196,16 @@ header {
   #middle{
     scroll-margin-top: 225px;
   }
+}
+
+@media (max-width: 425px) {
+  .h1{
+    margin-top: 0 !important;
+    line-height: 0.5 !important;
+  }
+  
+}
+.row > *{
+  padding: 0;
+  
 }
