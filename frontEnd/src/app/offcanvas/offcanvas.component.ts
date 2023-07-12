@@ -73,13 +73,13 @@ export class OffcanvasComponent {
 		this.customFoodDisplay = this.userCustomFood[this.canvasNumber]
 		if(this.checkSelectedIsDeleted())
 			this.storeDeletedSelected()
-		
+		console.log(this.checkSelectedIsDeleted())
 		console.log("\x1b[45m" + "offcanvas onView()", "CUSTOM_FOOD", this.userCustomFood[this.canvasNumber])
 		console.log("\x1b[45m" + "offcanvas onView()", "SELECTED_FOOD", this.selectedFoodToCheck[this.canvasNumber])
 		console.log("\x1b[45m" + "offcanvas onView()", "deletedSelectedFood", this.deletedSelectedFood)
 	}
 	checkSelectedIsDeleted() {
-		return this.userCustomFood[this.canvasNumber].length<this.selectedFoodToCheck[this.canvasNumber].length
+		return this.userCustomFood[this.canvasNumber].length>this.selectedFoodToCheck[this.canvasNumber].length
 	}
 	//todo this is not efficient this is n^2
 	storeDeletedSelected() {
