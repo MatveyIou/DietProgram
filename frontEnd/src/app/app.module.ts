@@ -30,6 +30,7 @@ import { UserStatsResolver } from 'src/resolvers/user-stats.resolver';
 import { UserCustomFoodResolver } from 'src/resolvers/user-custom-food.resolver';
 import { UserDateResolver } from 'src/resolvers/user-date.resolver';
 import { StartComponent } from './start/start.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,6 +56,7 @@ import { StartComponent } from './start/start.component';
       {path: '',component: StartComponent},
       {path: 'login', component: LoginComponent},
       {path: 'login/reg-final', component: RegFinalComponent},
+      {path: 'login/reg', component: RegComponent},
     ]),
     NgbModule,
     FontAwesomeModule,
