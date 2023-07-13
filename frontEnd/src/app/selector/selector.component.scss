@@ -32,3 +32,30 @@ $dark-red:  #9c2531;
       // transition: background 0s;
     }
   }
+
+
+  @keyframes fade {
+    0% {
+      opacity: 1;
+      color: #4f3cac;
+    }
+    33% {
+      opacity: 1;
+      color: #a761d4;
+    }
+    66% {
+      opacity: 1;
+      color: #8c54e8;
+    }
+    100% {
+      opacity: 1;
+      color: #4f3cac;
+    }
+  }
+  @function random-duration($min, $max) {
+    $seconds: random() * ($max - $min) + $min;
+    @return $seconds + 's';
+  }
+  .fade-element {
+    animation: fade #{random-duration(1, 5)} ease-in-out infinite;
+  }

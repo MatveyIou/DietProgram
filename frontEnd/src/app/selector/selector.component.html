@@ -5,12 +5,12 @@
 (closedMenu)="this.updateMainData()"></app-offcanvas>
 
 
-<ng-container class="img-thumbnail" *ngFor="let meal of ['Breakfast', 'Launch', 'Snack', 'Dinner']; let i = index">
+<ng-container class="img-thumbnail" *ngFor="let meal of ['Breakfast', 'Launch', 'Snack', 'Dinner'];let i = index">
   <div class="container my-3 border border-dark shadow buttonCustomSection test" (click)="openStaticBackdrop(i)" [id]="'myDiv' + i" style="border-top-width: 0px!important;">
     <div class="row text-info">
       <div class="col-3 text-center py-4 m-a">
-        <div class="mt-2">
-          <fa-icon class="" icon="coffee"></fa-icon>
+        <div class="mt-2" >
+          <fa-icon class="fade-element" [icon]="iconDisplay[i]" size="6x"></fa-icon>
         </div>
       </div>
       <div class="col-6 py-2 text-center ">

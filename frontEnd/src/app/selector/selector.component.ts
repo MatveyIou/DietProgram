@@ -6,6 +6,8 @@ import { Subscription, lastValueFrom } from 'rxjs';
 import { SelectorService } from './selector.service';
 import { UserCustomFoodResolver } from 'src/resolvers/user-custom-food.resolver';
 
+import { faBurger, faCoffee,  faCookieBite, faUtensils } from '@fortawesome/free-solid-svg-icons';
+
 
 
 @Component({
@@ -23,6 +25,7 @@ export class SelectorComponent{
   selectedFood:ICustomFood[][]=[[],[],[],[]]
   canvasNumber!: number
 
+  iconDisplay: any[] = [faCoffee, faBurger, faCookieBite ,faUtensils,];
   calorieDisplay:string[]=["Add BreakFast","Add Launch","Add Snack","Add Dinner"]
   calorieTotal:number[]=[0,0,0,0]
   docs: HTMLElement[] | undefined
@@ -32,8 +35,12 @@ export class SelectorComponent{
     private cdr: ChangeDetectorRef,
     private userCustomFoodResolver:UserCustomFoodResolver
     ){
-      
+
+
     }
+ 
+
+
   async fetchSelectedFood(){
     const response = await lastValueFrom(this.selectorService.getSelectedFood(this.currentDateData.date));
     this.selectedFood=response
@@ -120,6 +127,9 @@ export class SelectorComponent{
       }
       console.log("this is the Sums of kcal_total's :", this.calorieTotal)
     }
+
+  
+    
   }
   
   
