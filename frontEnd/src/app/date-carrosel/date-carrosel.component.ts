@@ -115,9 +115,14 @@ export class DateCarroselComponent implements OnInit {
    */
   move(pos: number) {
     const offset = this.posIni - pos;
-    if (offset < -100) this.carousel!.prev()
+    if (offset < -100) {
+      this.prevClick()
+      this.carousel!.prev()}
 
-    if (offset > 100) this.carousel!.next();
+    if (offset > 100) {
+      this.nextClick()
+      this.carousel!.next()
+    };
   }
   passUpdateEmitter() {
     console.log("\x1b[46m"+"eventUpdateEmitter.emit()","Emitter To Update the header from. date-carrosel")

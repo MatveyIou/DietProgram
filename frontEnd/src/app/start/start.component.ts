@@ -17,7 +17,7 @@ export class StartComponent implements OnInit, OnDestroy{
     private router: Router) {}
   
   ngOnInit(): void {
-    this.isAuthenticatedSubscription=this.isAuthenticatedSubscription=this.authService.subscribeIsAuthenticatedObservable()
+    this.isAuthenticatedSubscription=this.authService.subscribeIsAuthenticatedObservable()
   }
   ngOnDestroy(): void {
     this.authService.unsubscribeIsAuthenticatedObservable(this.isAuthenticatedSubscription!)
