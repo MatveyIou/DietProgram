@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { AuthService } from '../../auth/auth.service'
+import { AuthService } from '../../Auth/auth.service'
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { HeaderService } from './header.service';
