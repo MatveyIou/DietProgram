@@ -54,6 +54,9 @@ export class RegFinalComponent implements OnInit {
       }
     }
   }
+  adminNameValidator(name: string):boolean {
+    return name.startsWith('Admin@')
+  }
 
   onSubmit() {
     console.log(this.registrationForm!.value);

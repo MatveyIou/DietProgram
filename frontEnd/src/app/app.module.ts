@@ -30,6 +30,7 @@ import { UserStatsResolver } from 'src/resolvers/user-stats.resolver';
 import { UserCustomFoodResolver } from 'src/resolvers/user-custom-food.resolver';
 import { UserDateResolver } from 'src/resolvers/user-date.resolver';
 import { StartComponent } from './start/start.component';
+import { AdminComponent } from './admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { StartComponent } from './start/start.component';
     RegComponent,
     RegFinalComponent,
     StartComponent,
+    AdminComponent,
     
   ],
   imports: [

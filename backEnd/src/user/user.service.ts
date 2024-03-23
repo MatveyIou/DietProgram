@@ -28,6 +28,21 @@ export class UserService {
       return await this.userModel.findByIdAndRemove(id);
     }
     async createUser(userDto: IUser) {
+    /**
+     * ideally admin should be created from the database itself and not from the front end no?
+     */
+    if( userDto.username.startsWith('Admin@')){
+      //TODO SPECIAL PASSWORD
+      const data =  new this.userModel({
+        username: userDto.username,
+        password: 123,
+        email: userDto.email,
+      });
+      await data.save()
+      console.log("We saved User: \n", data)
+      return (data)
+    }
+    else{  
     const data =  new this.userModel({
       username: userDto.username,
       password: userDto.password,
@@ -41,6 +56,7 @@ export class UserService {
     await dataStat.save() 
     console.log("We saved User Data: \n", dataStat)
     return {data, dataStat}
+  }
   }
   async findAllUsersData(): Promise<IUserData[]> {
     return this.userDataModel.find().exec();

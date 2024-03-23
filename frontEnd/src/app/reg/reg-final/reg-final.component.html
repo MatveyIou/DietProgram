@@ -21,37 +21,54 @@
                     </div>
                     <input type="email" class="form-control" formControlName="email" placeholder="Email">
                   </div>
-                  <div class="form-group">
+                  <div class="form-group" *ngIf="!adminNameValidator(registrationForm.get('name').value)">
                     <div class="d-flex justify-content-between"><label for="password" class="" [ngClass]="{
             'text-success': registrationForm.controls.password.valid,
             'text-danger': registrationForm.controls.password.invalid}">Password </label> <label class="text-danger">
                         Min 3 letters</label></div>
                     <input type="password" placeholder="Password" class="form-control" formControlName="password">
                   </div>
-                  <div class="form-group">
+                  <div class="form-group" *ngIf="!adminNameValidator(registrationForm.get('name').value)">
                     <label for="confirmPassword" class="text-danger" style="color:#D03545" [ngClass]="{
         'text-success': !registrationForm.get('confirmPassword').hasError('mismatchedPasswords') && registrationForm.controls.password.valid,
         'text-danger': registrationForm.get('confirmPassword').hasError('mismatchedPasswords') }">Confirm
                       Password</label>
                     <input type="password" placeholder="Confirm Password" class="form-control"
                       formControlName="confirmPassword">
+                    </div>
                     <div class="text-danger d-flex justify-content-center mt-2"
                       *ngIf="registrationForm.get('confirmPassword').hasError('mismatchedPasswords')">
                       <label>
                         Passwords do not match</label>
                     </div>
+                    <div class="text-danger d-flex justify-content-center mt-2"
+                      *ngIf="adminNameValidator(registrationForm.get('name').value)">
+                      <label style="color: #7865d8;">
+                        Admin Registration!!!</label>
+                    </div>
                     <div *ngIf="errorMessage" class="d-flex justify-content-center mt-2">
                       <label class="error-message text-danger">
                         {{ errorMessage }}</label>
                     </div>
-                  </div>
+                  
                   <div class="d-flex justify-content-end mt-3">
-                    <span  class="d-inline-block me-4"
+                    <span  class="d-inline-block me-4" *ngIf="!adminNameValidator(registrationForm.get('name').value)"  
+                    
                       [ngbTooltip]="registrationForm.invalid ? 'Please Fill The Fields.' : ''" placement="start"
                       [openDelay]="50" [closeDelay]="100" [positionTarget]="target">
 
                       <button #target type="submit" class="btn btn-secondary mt-auto"
-                        [disabled]="registrationForm.invalid">Register</button>
+                        [disabled]="registrationForm.invalid"
+                        >Register</button>
+                    </span>
+                    <span  class="d-inline-block me-4" *ngIf="adminNameValidator(registrationForm.get('name').value)"  
+                    
+                      [ngbTooltip]="!adminNameValidator(registrationForm.get('name').value) || registrationForm.controls.email.invalid ? 'Please Fill The Fields.' : ''" placement="start"
+                      [openDelay]="50" [closeDelay]="100" [positionTarget]="target">
+
+                      <button #target type="submit" class="btn btn-secondary mt-auto"
+                        [disabled]="!adminNameValidator(registrationForm.get('name').value) || registrationForm.controls.email.invalid"
+                        >Register</button>
                     </span>
                     <div class="mt-auto">
                       <p class="h6 text-secondary">Already have an account? <a class="h5 text-success login-link" (click)="goToLogin()">Log in</a></p>
