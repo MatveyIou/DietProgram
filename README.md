@@ -50,13 +50,21 @@ npm install -g @nestjs/cli
 nest -v
 //should output the version
 ```
+After all installation we need to go to each directory and run npm install
+```
+cd frontEnd\
+npm install
+cd ..
+cd backend\
+npm install
+```
 ## Running it
 We'll have to run the FrontEnd and BackEnd. <br>
 Open two terminals and navigate to the FrontEnd and BackEnd.
 ## FrontEnd:
 Navigate to the FrontEnd folder:
 ```
-cd .\frontEnd\
+cd ...\frontEnd\
 ```
 and then to start the dev server run:
 ```
@@ -65,7 +73,7 @@ ng serve
 ## BackEnd:
 Navigate to the BackEnd folder:
 ```
-cd .\backEnd\
+cd ...\backEnd\
 ```
 and then to start the dev server run:
 ```
