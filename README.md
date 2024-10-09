@@ -25,10 +25,11 @@ Users can scroll through his Dates to see their calorie intake.
 First things first. you'll have to install node.JS and npm
 ```
 https://nodejs.org
+
 //after installing nodeJS and npm check at the terminal if you have nodeJS and npm
 node -v
-
 //should output the version of nodeJS
+
 npm -v
 //should output the version of npm
 ```
