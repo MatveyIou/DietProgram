@@ -55,7 +55,7 @@ After all installation we need to go to each directory and run npm install
 cd frontEnd\
 npm install
 cd ..
-cd backend\
+cd backEnd\
 npm install
 ```
 ## Running it
