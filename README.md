@@ -27,6 +27,7 @@ First things first. you'll have to install node.JS and npm
 https://nodejs.org
 //after installing nodeJS and npm check at the terminal if you have nodeJS and npm
 node -v
+
 //should output the version of nodeJS
 npm -v
 //should output the version of npm
@@ -35,6 +36,7 @@ Afterwards we need to install AngularJS cli and nestJS cli
 ```
 //Angular installation 
 npm install -g @angular/cli
+
 //after install check it
 ng v
 //should output the version
@@ -42,6 +44,7 @@ ng v
 ```
 //NestJS installation 
 npm install -g @nestjs/cli
+
 //after install check it
 nest -v
 //should output the version
